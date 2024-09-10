@@ -1,8 +1,10 @@
 # RestaUm
 
 ## Participantes
-* Thomaz de Souza Scopel - RA: 10417183
-* Vinícius Sanches Cappatti - RA: 10418266
+|Nome|RA|
+|---|---|
+|Thomaz de Souza Scopel| 10417183|
+|Vinícius Sanches Cappatti| 10418266|
 
 ## Objetivo
 objetivo deste trabalho é implementar uma técnica de backtrack para resolver o problema de um jogo de tabuleiro conhecido como Resta um. No início do jogo, temos 33 buracos e 32 pinos dispostos em forma de cruz, com a posição central vazia.
