@@ -20,3 +20,6 @@ O objetivo do jogo é, após 31 movimentos válidos, obter apenas o pino central
 ![Posiçao final esperada](imagensREADME/image-2.png)
 
 ## Link para explicação
+
+## Referências bibliográficas
+1. CUNHA, Jair Ferreira da. Resta Um - Busca de Estratégias na Resolução [doi:10.11606/D.55.2021.tde-29032021-095422]. São Carlos : Instituto de Ciências Matemáticas e de Computação, University of São Paulo, 2021. Master's Dissertation in Mestrado Profissional em Matemática em Rede Nacional.
