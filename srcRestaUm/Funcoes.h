@@ -14,6 +14,6 @@ bool finalizou(int **tabuleiro, int **gabarito, int linhas, int colunas);
 bool movimentoValido(int **tabuleiro, int x0, int y0, char direcao);
 bool movimenta(int **tabuleiro, int x0, int y0, char direcao);
 bool haJogadasPosiveis(int **tabuleiro, int linhas, int colunas);
-bool jogaRestaUm(int **tabuleiro, int **gabarito, int linhas, int colunas);
+bool jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, int centroLin, int centroCol);
 
 #endif

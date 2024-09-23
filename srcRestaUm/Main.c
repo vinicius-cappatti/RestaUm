@@ -23,6 +23,7 @@
 int main(){
     setlocale(LC_ALL, "pt_BR.UTF-8"); 
 
+    /*Determinacao da posicao inicial do tabuleiro*/
     int linVazIni, colVazIni;
     int tabuleiro[MAX_LINHAS][MAX_COLUNAS] = {       
         {-1, -1,  1,  1,  1, -1, -1},
@@ -48,10 +49,15 @@ int main(){
         scanf("%d", &colVazIni);
     }
 
-    if(linVazIni != 3 && colVazIni != 3){
-        tabuleiro[3][3] = 1;
+    if(linVazIni != LIN_CENTRO && colVazIni != COL_CENTRO){
+        tabuleiro[LIN_CENTRO][COL_CENTRO] = 1;
         tabuleiro[linVazIni][colVazIni] = 0;
     }
+
+    /*Chamada do backtracking*/
+    jogaRestaUm(tabuleiro, MAX_LINHAS, MAX_COLUNAS, NUM_INI_PECAS, LIN_CENTRO, COL_CENTRO);
+
+    /*TODO: Implementar a saida em arquivo*/
     
     return 0;
 }
