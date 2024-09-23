@@ -5,7 +5,7 @@
 *********************************************************************** */
 
 /*Funcoes implementadas para o jogo de resta um*/
-#include "RestaUm.h"
+#include "Funcoes.h"
 
 /*Bibliotecas utilizadas*/
 #include <stdio.h>

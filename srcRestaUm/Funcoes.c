@@ -4,7 +4,7 @@
 *    Vinícius Sanches Cappatti (RA: 10418266)
 *********************************************************************** */
 
-#include "RestaUm.h"
+#include "Funcoes.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
