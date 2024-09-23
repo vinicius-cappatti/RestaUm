@@ -9,9 +9,11 @@
 
 #ifndef funcoes.h
 
+bool posicaoValida(int **tabuleiro, int linhas, int colunas, int x, int y);
 bool finalizou(int **tabuleiro, int **gabarito, int linhas, int colunas);
 bool movimentoValido(int **tabuleiro, int x0, int y0, char direcao);
-void movimenta(int **tabuleiro, int x0, int y0, char direcao);
-bool jogaRestaUm(int **tabuleiro, int **gabarito, int linhas, int colunas, int contPecas);
+bool movimenta(int **tabuleiro, int x0, int y0, char direcao);
+bool haJogadasPosiveis(int **tabuleiro, int linhas, int colunas);
+bool jogaRestaUm(int **tabuleiro, int **gabarito, int linhas, int colunas);
 
 #endif
