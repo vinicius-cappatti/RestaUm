@@ -19,17 +19,89 @@ bool finalizou(int **tabuleiro, int **gabarito, int linhas, int colunas){
     return true;
 }
 
-bool movimentoValido(int **tabuleiro, int x0, int y0, int xf, int yf){
+bool movimentoValido(int **tabuleiro, int x0, int y0, char direcao){
 
-    if(abs(xf - x0) > 2 || abs(yf - y0) > 2){ return false; } /*Tentativa de se mover mais que 2 casas em uma direção*/
+    /* ********************************************
+    * Possiveis valores da variavel direcao sao:
+    *   'c' quando mover para CIMA
+    *   'b' quando mover para BAIXO
+    *   'e' quando mover para a ESQUERDA
+    *   'd' quando mover para a DIREITA
+    ******************************************** */
 
-    if(tabuleiro[x0][y0] == -1 || tabuleiro[xf][yf] == -1){ return false; } /*Posição inicial ou final fora do tabuleiro*/
+    if(tabuleiro[x0][y0] < 1){ return false; }
 
-    if(tabuleiro[x0][y0] == 0 || tabuleiro[xf][yf] == 1) { return false; } /*Posição inicial sem peça ou posiçã final ocupada*/
+    switch (direcao){
+        case 'c':
 
-    if(xf > 6 || xf < 0 || yf > 6 || yf < 0){ return false; } /*Posição final fora do  array*/
-    
-    if(tabuleiro[x0 + 1][y0 + 1] != 1){ return false; } /*Todo movimento deve, obrigatoriamente, comer uma peça*/
+            if(tabuleiro[x0 - 1][y0] != 1 || tabuleiro[x0 - 2][y0] != 0){ return false;}
+
+            break;
+        
+        case 'b':
+
+            if(tabuleiro[x0 + 1][y0] != 1 || tabuleiro[x0 + 2][y0] != 0){ return false;}
+
+            break;
+
+        case 'e':
+
+            if(tabuleiro[x0][y0 - 1] != 1 || tabuleiro[x0][y0 - 2] != 0){ return false;}
+
+            break;
+
+        case 'd':
+
+            if(tabuleiro[x0][y0 + 1] != 1 || tabuleiro[x0][y0 + 2] != 0){ return false;}
+
+            break;
+    }
 
     return true;
+}
+
+void movimenta(int **tabuleiro, int x0, int y0, char direcao){
+    
+    /* ********************************************
+    * Possiveis valores da variavel direcao sao:
+    *   'c' quando mover para CIMA
+    *   'b' quando mover para BAIXO
+    *   'e' quando mover para a ESQUERDA
+    *   'd' quando mover para a DIREITA
+    ******************************************** */
+
+    tabuleiro[x0][y0] = 0; /*Remove a peça da posicao inicial*/
+
+    if(direcao == 'c'){ /*Movimento para cima*/
+        tabuleiro[x0 - 1][y0] = 0;
+        tabuleiro[x0 - 2][y0] = 1;
+    }
+
+    if(direcao == 'b'){ /*Movimento para baixo*/
+        tabuleiro[x0 + 1][y0] = 0;
+        tabuleiro[x0 + 2][y0] = 1;
+    }
+
+    if(direcao == 'e'){ /*Movimento para esquerda*/
+        tabuleiro[x0][y0 - 1] = 0;
+        tabuleiro[x0][y0 - 2] = 1;
+    }
+
+    if(direcao == 'd'){ /*Movimento para direita*/
+        tabuleiro[x0][y0 + 1] = 0;
+        tabuleiro[x0][y0 + 2] = 1;
+    }
+}
+
+bool jogaRestaUm(int **tabuleiro, int **gabarito, int linhas, int colunas){
+    
+    int xAtual = 0, yAtual = 0;
+
+    if(finalizou(tabuleiro, gabarito, linhas, colunas)){
+        return true;
+    }
+
+    for(int x0 = xAtual; x0 < linhas; x0++){
+        
+    }
 }

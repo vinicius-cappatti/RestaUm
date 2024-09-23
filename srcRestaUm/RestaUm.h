@@ -10,6 +10,8 @@
 #ifndef funcoes.h
 
 bool finalizou(int **tabuleiro, int **gabarito, int linhas, int colunas);
-bool movimentoValido(int **tabuleiro, int x0, int y0, int xf, int yf);
+bool movimentoValido(int **tabuleiro, int x0, int y0, char direcao);
+void movimenta(int **tabuleiro, int x0, int y0, char direcao);
+bool jogaRestaUm(int **tabuleiro, int **gabarito, int linhas, int colunas, int contPecas);
 
 #endif
