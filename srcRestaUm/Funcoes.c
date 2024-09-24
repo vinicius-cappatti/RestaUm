@@ -70,9 +70,9 @@ bool movimentoValido(int **tabuleiro, int x0, int y0, char direcao){
     return true;
 }
 
-/*Metodo que realiza o movimento de tabuleiro[x0][y0] conforme parametro direcao e retorna se foi bem sucedido*/
-bool movimenta(int **tabuleiro, int x0, int y0, char direcao){
-    
+/*Metodo que realiza o movimento de tabuleiro[x0][y0] conforme parametro direcao e retorna o movimento*/
+Movimento movimenta(int **tabuleiro, int x0, int y0, char direcao){
+
     /* ********************************************
     * Possiveis valores da variavel direcao sao:
     *   'c' quando mover para CIMA
@@ -83,31 +83,49 @@ bool movimenta(int **tabuleiro, int x0, int y0, char direcao){
 
     tabuleiro[x0][y0] = 0; /*Remove a peça da posicao inicial*/
 
+    Movimento mov;
+
     if(direcao == 'c'){ /*Movimento para cima*/
         tabuleiro[x0 - 1][y0] = 0;
         tabuleiro[x0 - 2][y0] = 1;
-        return true;
+        
+        mov.x0 = x0;
+        mov.y0 = y0;
+        mov.xf = x0 - 2;
+        mov.yf = y0;
     }
 
     if(direcao == 'b'){ /*Movimento para baixo*/
         tabuleiro[x0 + 1][y0] = 0;
         tabuleiro[x0 + 2][y0] = 1;
-        return true;
+        
+        mov.x0 = x0;
+        mov.y0 = y0;
+        mov.xf = x0 + 2;
+        mov.yf = y0;
     }
 
     if(direcao == 'e'){ /*Movimento para esquerda*/
         tabuleiro[x0][y0 - 1] = 0;
         tabuleiro[x0][y0 - 2] = 1;
-        return true;
+        
+        mov.x0 = x0;
+        mov.y0 = y0;
+        mov.xf = x0;
+        mov.yf = y0 - 2;
     }
 
     if(direcao == 'd'){ /*Movimento para direita*/
         tabuleiro[x0][y0 + 1] = 0;
         tabuleiro[x0][y0 + 2] = 1;
-        return true;
+        
+        mov.x0 = x0;
+        mov.y0 = y0;
+        mov.xf = x0;
+        mov.yf = y0 + 2;
     }
 
-    return false;
+    return mov;
 }
 
 /*Metodo retorna se ha pelo menos uma jogada possivel a ser feita*/
@@ -125,14 +143,19 @@ bool haJogadasPosiveis(int **tabuleiro, int linhas, int colunas){
 }
 
 /*Metodo com backtracking do resta um*/
-bool jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, int centroLin, int centroCol){
+Historico jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, int centroLin, int centroCol){
+    
+    Historico hist;
+
+    hist.listMovs = (Movimento*) malloc((qtdPecas - 1));
+
     for(int x = 0; x < linhas; x++){
         for(int y = 0; y < colunas; y++){
             if(posicaoValida(tabuleiro, linhas, colunas, x, y)){
                 
                 /*Testa com movimento para cima*/
                 if(movimentoValido(tabuleiro, x, y, 'c')){
-                    movimenta(tabuleiro, x, y, 'c');
+                    Movimento mov = movimenta(tabuleiro, x, y, 'c');
                     qtdPecas--;
 
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
@@ -192,7 +215,25 @@ bool jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, int cen
                         ********************************************************************************** */
                     }
 
+                }
             }
         }
     }
+}
+
+void enfila(Historico hist, Movimento mov){
+    hist.listMovs[hist.tam] = mov;
+}
+
+Movimento desenfila(Historico hist){
+    Movimento ret = hist.listMovs[hist.tam];
+    limpaMovimento(hist.listMovs[hist.tam]);
+    return ret;
+}
+
+void limpaMovimento(Movimento mov){
+    mov.x0 = 0;
+    mov.y0 = 0;
+    mov.xf = 0;
+    mov.yf = 0;
 }
