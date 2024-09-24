@@ -15,6 +15,7 @@
 
 /*Constantes do programa*/
 #define MAX_LINHAS 7
+#define TAMANHO 7
 #define MAX_COLUNAS 7
 #define LIN_CENTRO 3
 #define COL_CENTRO 3
@@ -30,19 +31,31 @@ int main(){
     * 0 representa uma casa vazia
     * 1 representa uma casa ocupada
     ****************************************** */
-    int **tabuleiro = (int**) malloc(MAX_LINHAS * sizeof(int*));
-    for(int i = 0; i < MAX_LINHAS; i++){
-        tabuleiro[i] = (int *) malloc(MAX_COLUNAS * sizeof(int));
+    int **tabuleiro = (int **)malloc(TAMANHO * sizeof(int *));
+    for (int i = 0; i < TAMANHO; i++) {
+        tabuleiro[i] = (int *)malloc(TAMANHO * sizeof(int));
+        // Inicializa a linha para evitar lixo de memória
+        for (int j = 0; j < TAMANHO; j++) {
+            tabuleiro[i][j] = 0;
+        }
     }
 
+    // Chama a função para ler o tabuleiro do arquivo e armazená-lo na matriz
     lerTabuleiro(tabuleiro, MAX_LINHAS, MAX_COLUNAS, "entrada.txt");
 
-    for(int i = 0; i < MAX_LINHAS; i++){
-        for(int j = 0; j < MAX_COLUNAS; j++){
-            printf("  %d", tabuleiro[i][j]);
+    // Exibe a matriz do tabuleiro para conferir o resultado
+    for (int i = 0; i < MAX_LINHAS; i++) {
+        for (int j = 0; j < MAX_COLUNAS; j++) {
+            printf("%d ", tabuleiro[i][j]);
         }
         printf("\n");
     }
+
+    // Libera a memória alocada dinamicamente
+    for (int i = 0; i < MAX_LINHAS; i++) {
+        free(tabuleiro[i]);
+    }
+    free(tabuleiro);
 
     /*Movimento** jogadas = (Movimento**) malloc((NUM_INI_PECAS - 1) * sizeof(Movimento*));
     int cont = 0;

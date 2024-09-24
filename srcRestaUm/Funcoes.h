@@ -6,6 +6,8 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
+#include <locale.h>
 
 #ifndef Funcoes
 
@@ -35,7 +37,8 @@ typedef struct historico{
 
 /*Funcoes do jogo Resta Um*/
 
-void lerTabuleiro(int **tabuleiro, int numLinhas, int numColunas, const char *nomeArquivo);
+void lerTabuleiro(int **tabuleiro, int numLinhas, int numColunas, char *nomeArquivo);
+void removeNovaLinha(char *linha);
 bool posicaoValida(int **tabuleiro, int linhas, int colunas, int x, int y);
 bool finalizou(int **tabuleiro, int **gabarito, int linhas, int colunas);
 bool movimentoValido(int **tabuleiro, int linhas, int colunas, int x0, int y0, char direcao);

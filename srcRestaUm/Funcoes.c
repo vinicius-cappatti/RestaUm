@@ -9,9 +9,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <locale.h>
+#include <string.h>
  
  /*Funcao que le o arquivo de entrada e o converte em uma matriz*/
-void lerTabuleiro(int **tabuleiro, int numLinhas, int numColunas, const char *nomeArquivo) {
+void lerTabuleiro(int **tabuleiro, int numLinhas, int numColunas, char *nomeArquivo) {
     FILE *arquivo = fopen(nomeArquivo, "r");  // Abre o arquivo em modo de leitura
 
     if (arquivo == NULL) {
@@ -19,12 +20,17 @@ void lerTabuleiro(int **tabuleiro, int numLinhas, int numColunas, const char *no
         return;
     }
 
-    char linha[10];
-    int i, j;
+    char linha[numColunas + 3];  // Ajusta para possível '\n' e '\0'
 
     // Percorre o arquivo, lendo linha por linha
-    for (i = 0; i < numLinhas + 2; i++) {  // TAMANHO + 2 devido a margem (#)
-        fgets(linha, sizeof(linha), arquivo); 
+    for (int i = 0; i < numLinhas + 2; i++) {  // numLinhas + 2 devido à margem (#)
+        if (fgets(linha, sizeof(linha), arquivo) == NULL) {
+            printf("Erro ao ler o arquivo.\n");
+            break;
+        }
+
+        // Remove a nova linha (\n) se estiver presente
+        removeNovaLinha(linha);
 
         if (i == 0 || i == numLinhas + 1) {
             // Ignora a primeira e a última linha (margens de #)
@@ -32,18 +38,32 @@ void lerTabuleiro(int **tabuleiro, int numLinhas, int numColunas, const char *no
         }
 
         // Processa apenas as linhas internas (sem a margem)
-        for (j = 1; j <= numColunas; j++) {
-            if (linha[j] == '#') {
+        for (int j = 1; j <= numColunas; j++) {
+            char aux = linha[j];
+            
+            while(aux != ' ' && aux != 'o' && aux != '#'){
+                aux = linha[j + 1];    
+            }
+            
+            if (aux == '#') {
                 tabuleiro[i - 1][j - 1] = -1;
-            } else if (linha[j] == 'o') {
+            } else if (aux == 'o') {
                 tabuleiro[i - 1][j - 1] = 1;
-            } else if (linha[j] == ' ') {
+            } else if (aux == ' ') {
                 tabuleiro[i - 1][j - 1] = 0;
             }
+            
         }
     }
 
     fclose(arquivo);  // Fecha o arquivo
+}
+
+void removeNovaLinha(char *linha) {
+    size_t len = strlen(linha);
+    if (len > 0 && linha[len - 1] == '\n') {
+        linha[len - 1] = '\0';  // Remove o '\n'
+    }
 }
 
 /*Metodo retorna se a casa tabuleiro[x][y] pode ser utilizada*/
