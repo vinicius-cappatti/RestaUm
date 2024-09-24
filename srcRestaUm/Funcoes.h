@@ -49,6 +49,6 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
 /*Funcoes da struct Movimento*/
 
 void limpaMovimento(Movimento *mov);
-void printMov(Movimento mov);
+void printMov(Movimento *mov);
 
 #endif

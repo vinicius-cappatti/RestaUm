@@ -35,8 +35,6 @@
         }
     }
 
-    printf("Teste");
-
     return tabuleiro;
  }
 
@@ -186,11 +184,8 @@ bool haJogadasPosiveis(int **tabuleiro, int linhas, int colunas){
 }
 
 /*Metodo com backtracking do resta um*/
-Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, int centroLin, int centroCol, Movimento** hist, int *cont){
+Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, int centroLin, int centroCol, Movimento** historico, int *cont){
     
-    /*Inicializa a fila do historico*/
-    Movimento** historico = hist;
-
     for(int x = 0; x < linhas; x++){
         for(int y = 0; y < colunas; y++){
             if(posicaoValida(tabuleiro, linhas, colunas, x, y)){
@@ -202,13 +197,20 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
 
                     historico[(*cont)] = &mov;
                     (*cont)++;
+                    printMov(historico[(*cont)]);
+                    printMov(&mov);
 
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
-                        jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol, hist, cont);
+                        jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol, historico, cont);
                     } else if(qtdPecas == 1 && tabuleiro[centroLin][centroCol] == 1){
                         return historico;
                     }
 
+                    printf("Deletando: ");
+                    printMov(historico[(*cont)]);
+                    printf("\n");
+                    limpaMovimento(historico[(*cont)]);
+                    (*cont)--;
                 }
 
                 /*Testa com movimento para a direita*/
@@ -218,13 +220,20 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
 
                     historico[(*cont)] = &mov;
                     (*cont)++;
+                    printMov(historico[(*cont)]);
+                    printMov(&mov);
 
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
-                        jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol, hist, cont);
+                        jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol, historico, cont);
                     } else if(qtdPecas == 1 && tabuleiro[centroLin][centroCol] == 1){
                         return historico;
                     }
-
+                    
+                    printf("Deletando: ");
+                    printMov(historico[(*cont)]);
+                    printf("\n");
+                    limpaMovimento(historico[(*cont)]);
+                    (*cont)--;
                 }
 
                 /*Testa com movimento para baixo*/
@@ -234,13 +243,20 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
 
                     historico[(*cont)] = &mov;
                     (*cont)++;
+                    printMov(historico[(*cont)]);
+                    printMov(&mov);
 
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
-                        jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol, hist, cont);
+                        jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol, historico, cont);
                     } else if(qtdPecas == 1 && tabuleiro[centroLin][centroCol] == 1){
                         return historico;
                     }
 
+                    printf("Deletando: ");
+                    printMov(historico[(*cont)]);
+                    printf("\n");
+                    limpaMovimento(historico[(*cont)]);
+                    (*cont)--;
                 }
 
                 /*Testa com movimento para a esquerda*/
@@ -250,12 +266,21 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
 
                     historico[(*cont)] = &mov;
                     (*cont)++;
+                    printMov(historico[(*cont)]);
+                    printMov(&mov);
 
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
-                        jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol, hist, cont);
+                        jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol, historico, cont);
                     } else if(qtdPecas == 1 && tabuleiro[centroLin][centroCol] == 1){
                         return historico;
                     }
+                    
+
+                    printf("Deletando: ");
+                    printMov(historico[(*cont)]);
+                    printf("\n");
+                    limpaMovimento(historico[(*cont)]);
+                    (*cont)--;
                 }
             }
         }
@@ -270,6 +295,6 @@ void limpaMovimento(Movimento *mov){
     mov->direcao = 0;
 }
 
-void printMov(Movimento mov){
-    printf("(%d, %d) -> (%d, %d)\n", mov.x0, mov.y0, mov.xf, mov.yf);
+void printMov(Movimento *mov){
+    printf("(%d, %d) -> (%d, %d)\n", mov->x0, mov->y0, mov->xf, mov->yf);
 }

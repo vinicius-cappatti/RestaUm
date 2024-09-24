@@ -26,25 +26,28 @@ int main(){
     /*Determinacao da posicao inicial do tabuleiro*/
     int **tabuleiro = criaTabuleiro();
 
-    /* ****************************************
-    * TODO: implementar a leitura do 
-    * arquivo entrada.txt
-    * CONSIDERAR:
-    * 1. Margem de # em torno do tabuleiro
-    * 2. Casas invalidas = '#'
-    * 3. Casas vazias = ' ' (espaco)
-    * 4. Casas cheias = 'o'
-    **************************************** */
+    FILE *entrada;
+    
+    entrada = fopen("entrada.txt", "r");
+
+    if(entrada == NULL){
+        printf("Erro ao abrir o arquivo.\n");
+        return 1;
+    }
+    
+    char linha[MAX_COLUNAS + 2]; // Como ha uma margem em torno
+    while(fgets())
+
     
     /*Variaveis auxiliares para o backtracking*/
 
-    Movimento** auxListMovs = (Movimento**) malloc((NUM_INI_PECAS - 1) * sizeof(Movimento*));
+    Movimento** jogadas = (Movimento**) malloc((NUM_INI_PECAS - 1) * sizeof(Movimento*));
     int cont = 0;
     int *pcont = &cont;
     
     /*Chamada do backtracking*/
     
-    Movimento** jogadas = jogaRestaUm(tabuleiro, MAX_LINHAS, MAX_COLUNAS, NUM_INI_PECAS, LIN_CENTRO, COL_CENTRO, auxListMovs, pcont);
+    jogaRestaUm(tabuleiro, MAX_LINHAS, MAX_COLUNAS, NUM_INI_PECAS, LIN_CENTRO, COL_CENTRO, jogadas, pcont);
 
     if(jogadas == NULL){
         printf("Erro na criação das jogadas.");
@@ -55,8 +58,9 @@ int main(){
     /*TODO: Implementar a saida em arquivo*/
 
     for(int i = 0; i < tam; i++){
-        printMov(*jogadas[i]);
+        printMov(jogadas[i]);
     }
 
+    fclose(entrada);
     return 0;
 }
