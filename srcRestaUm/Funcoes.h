@@ -35,7 +35,7 @@ typedef struct historico{
 
 /*Funcoes do jogo Resta Um*/
 
-int** criaTabuleiro();
+void lerTabuleiro(int **tabuleiro, int numLinhas, int numColunas, const char *nomeArquivo);
 bool posicaoValida(int **tabuleiro, int linhas, int colunas, int x, int y);
 bool finalizou(int **tabuleiro, int **gabarito, int linhas, int colunas);
 bool movimentoValido(int **tabuleiro, int linhas, int colunas, int x0, int y0, char direcao);

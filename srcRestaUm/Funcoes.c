@@ -10,33 +10,41 @@
 #include <stdlib.h>
 #include <locale.h>
  
- /*Funcao para testes onde criamos um tabuleiro padrao de resta um*/
- int** criaTabuleiro(){
-    int **tabuleiro = (int **)malloc(7 * sizeof(int *));
-    for (int i = 0; i < 7; i++) {
-        tabuleiro[i] = (int *)malloc(7 * sizeof(int));
+ /*Funcao que le o arquivo de entrada e o converte em uma matriz*/
+void lerTabuleiro(int **tabuleiro, int numLinhas, int numColunas, const char *nomeArquivo) {
+    FILE *arquivo = fopen(nomeArquivo, "r");  // Abre o arquivo em modo de leitura
+
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return;
     }
 
-    // Inicializando o tabuleiro com os valores desejados
-    int valores[7][7] = {
-        {-1, -1,  1,  1,  1, -1, -1},
-        {-1, -1,  1,  1,  1, -1, -1},
-        { 1,  1,  1,  1,  1,  1,  1},
-        { 1,  1,  1,  0,  1,  1,  1},
-        { 1,  1,  1,  1,  1,  1,  1},
-        {-1, -1,  1,  1,  1, -1, -1},
-        {-1, -1,  1,  1,  1, -1, -1},
-    };
+    char linha[10];
+    int i, j;
 
-    // Copiando os valores do array estático para o tabuleiro dinâmico
-    for (int i = 0; i < 7; i++) {
-        for (int j = 0; j < 7; j++) {
-            tabuleiro[i][j] = valores[i][j];
+    // Percorre o arquivo, lendo linha por linha
+    for (i = 0; i < numLinhas + 2; i++) {  // TAMANHO + 2 devido a margem (#)
+        fgets(linha, sizeof(linha), arquivo); 
+
+        if (i == 0 || i == numLinhas + 1) {
+            // Ignora a primeira e a última linha (margens de #)
+            continue;
+        }
+
+        // Processa apenas as linhas internas (sem a margem)
+        for (j = 1; j <= numColunas; j++) {
+            if (linha[j] == '#') {
+                tabuleiro[i - 1][j - 1] = -1;
+            } else if (linha[j] == 'o') {
+                tabuleiro[i - 1][j - 1] = 1;
+            } else if (linha[j] == ' ') {
+                tabuleiro[i - 1][j - 1] = 0;
+            }
         }
     }
 
-    return tabuleiro;
- }
+    fclose(arquivo);  // Fecha o arquivo
+}
 
 /*Metodo retorna se a casa tabuleiro[x][y] pode ser utilizada*/
 bool posicaoValida(int **tabuleiro, int linhas, int colunas, int x, int y){

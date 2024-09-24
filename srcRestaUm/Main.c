@@ -22,30 +22,33 @@
 
 int main(){
     setlocale(LC_ALL, "pt_BR.UTF-8"); 
-
-    /*Determinacao da posicao inicial do tabuleiro*/
-    int **tabuleiro = criaTabuleiro();
-
-    FILE *entrada;
     
-    entrada = fopen("entrada.txt", "r");
-
-    if(entrada == NULL){
-        printf("Erro ao abrir o arquivo.\n");
-        return 1;
+    /* ******************************************
+    * Matriz que contem um tabuleiro de Resta um
+    * onde:
+    * -1 representa uma posicao onde nao ha casa
+    * 0 representa uma casa vazia
+    * 1 representa uma casa ocupada
+    ****************************************** */
+    int **tabuleiro = (int**) malloc(MAX_LINHAS * sizeof(int*));
+    for(int i = 0; i < MAX_LINHAS; i++){
+        tabuleiro[i] = (int *) malloc(MAX_COLUNAS * sizeof(int));
     }
-    
-    char linha[MAX_COLUNAS + 2]; // Como ha uma margem em torno
-    while(fgets())
 
-    
-    /*Variaveis auxiliares para o backtracking*/
+    lerTabuleiro(tabuleiro, MAX_LINHAS, MAX_COLUNAS, "entrada.txt");
 
-    Movimento** jogadas = (Movimento**) malloc((NUM_INI_PECAS - 1) * sizeof(Movimento*));
+    for(int i = 0; i < MAX_LINHAS; i++){
+        for(int j = 0; j < MAX_COLUNAS; j++){
+            printf("  %d", tabuleiro[i][j]);
+        }
+        printf("\n");
+    }
+
+    /*Movimento** jogadas = (Movimento**) malloc((NUM_INI_PECAS - 1) * sizeof(Movimento*));
     int cont = 0;
     int *pcont = &cont;
     
-    /*Chamada do backtracking*/
+    /*Chamada do backtracking*//*
     
     jogaRestaUm(tabuleiro, MAX_LINHAS, MAX_COLUNAS, NUM_INI_PECAS, LIN_CENTRO, COL_CENTRO, jogadas, pcont);
 
@@ -57,10 +60,9 @@ int main(){
     int tam = sizeof(jogadas) / sizeof(Movimento*);
     /*TODO: Implementar a saida em arquivo*/
 
-    for(int i = 0; i < tam; i++){
+    /*for(int i = 0; i < tam; i++){
         printMov(jogadas[i]);
-    }
+    }*/
 
-    fclose(entrada);
     return 0;
 }
