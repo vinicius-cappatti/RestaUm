@@ -34,11 +34,15 @@
             tabuleiro[i][j] = valores[i][j];
         }
     }
+
+    printf("Teste");
+
+    return tabuleiro;
  }
 
 /*Metodo retorna se a casa tabuleiro[x][y] pode ser utilizada*/
 bool posicaoValida(int **tabuleiro, int linhas, int colunas, int x, int y){
-    if(x < 0 || x > linhas || y < 0 || y > linhas){ return false; } /*Verifica se as coordenadas estao dentro do vetor*/
+    if(x < 0 || x >= linhas || y < 0 || y >= colunas){ return false; } /*Verifica se as coordenadas estao dentro do vetor*/
     if(tabuleiro[x][y] == -1){ return false; } /*Casas com valor -1 sao invalidas para movimentacao de pecas*/
 
     return true;
@@ -56,7 +60,7 @@ bool finalizou(int **tabuleiro, int **gabarito, int linhas, int colunas){
 }
 
 /*Metodo retorna se a peca da posicao tabuleiro[x0][y0] pode ser movida conforme a direcao*/
-bool movimentoValido(int **tabuleiro, int x0, int y0, char direcao){
+bool movimentoValido(int **tabuleiro, int linhas, int colunas, int x0, int y0, char direcao){
 
     /* ********************************************
     * Possiveis valores da variavel direcao sao:
@@ -71,24 +75,28 @@ bool movimentoValido(int **tabuleiro, int x0, int y0, char direcao){
     switch (direcao){
         case 'c':
 
+            if((x0 - 1) < 0 || (x0 - 2) < 0){ return false; } /*Tentativa de se acessar memoria fora da matriz*/
             if(tabuleiro[x0 - 1][y0] != 1 || tabuleiro[x0 - 2][y0] != 0){ return false;}
 
             break;
         
         case 'b':
 
+            if((x0 + 1) >= linhas || (x0 + 2) >= linhas){ return false; }
             if(tabuleiro[x0 + 1][y0] != 1 || tabuleiro[x0 + 2][y0] != 0){ return false;}
 
             break;
 
         case 'e':
 
+            if((y0 - 1) < 0 || (y0 - 2) < 0){ return false; }
             if(tabuleiro[x0][y0 - 1] != 1 || tabuleiro[x0][y0 - 2] != 0){ return false;}
 
             break;
 
         case 'd':
 
+            if((y0 + 1) >= colunas || (y0 + 2) >= colunas){ return false; }
             if(tabuleiro[x0][y0 + 1] != 1 || tabuleiro[x0][y0 + 2] != 0){ return false;}
 
             break;
@@ -167,10 +175,10 @@ Movimento movimentaEsq(int **tabuleiro, int x0, int y0){
 bool haJogadasPosiveis(int **tabuleiro, int linhas, int colunas){
     for(int x = 0; x < linhas; x++){
         for(int y = 0; y < colunas; y++){
-            if(movimentoValido(tabuleiro, x, y, 'c')){ return true; } /*Verifica movimento para a cima*/
-            if(movimentoValido(tabuleiro, x, y, 'd')){ return true; } /*Verifica movimento para a direita*/
-            if(movimentoValido(tabuleiro, x, y, 'b')){ return true; } /*Verifica movimento para a baixo*/
-            if(movimentoValido(tabuleiro, x, y, 'e')){ return true; } /*Verifica movimento para a esquerda*/
+            if(movimentoValido(tabuleiro, linhas, colunas, x, y, 'c')){ return true; } /*Verifica movimento para a cima*/
+            if(movimentoValido(tabuleiro, linhas, colunas, x, y, 'd')){ return true; } /*Verifica movimento para a direita*/
+            if(movimentoValido(tabuleiro, linhas, colunas, x, y, 'b')){ return true; } /*Verifica movimento para a baixo*/
+            if(movimentoValido(tabuleiro, linhas, colunas, x, y, 'e')){ return true; } /*Verifica movimento para a esquerda*/
         }
     }
 
@@ -178,157 +186,90 @@ bool haJogadasPosiveis(int **tabuleiro, int linhas, int colunas){
 }
 
 /*Metodo com backtracking do resta um*/
-Historico jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, int centroLin, int centroCol){
+Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, int centroLin, int centroCol, Movimento** hist, int *cont){
     
-    Historico hist;
-
-    init(hist, qtdPecas - 1); /*Inicializa a fila do historico*/
+    /*Inicializa a fila do historico*/
+    Movimento** historico = hist;
 
     for(int x = 0; x < linhas; x++){
         for(int y = 0; y < colunas; y++){
             if(posicaoValida(tabuleiro, linhas, colunas, x, y)){
                 
                 /*Testa com movimento para cima*/
-                if(movimentoValido(tabuleiro, x, y, 'c')){
+                if(movimentoValido(tabuleiro, linhas, colunas, x, y, 'c')){
                     Movimento mov = movimentaCima(tabuleiro, x, y);
-                    enfila(hist, mov);
                     qtdPecas--;
 
-                    if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
-                        jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol);
-                    } else if(qtdPecas == 1 && tabuleiro[centroLin][centroCol] == 1){
-                        return hist;
-                    }
+                    historico[(*cont)] = &mov;
+                    (*cont)++;
 
-                    desenfila(hist);
+                    if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
+                        jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol, hist, cont);
+                    } else if(qtdPecas == 1 && tabuleiro[centroLin][centroCol] == 1){
+                        return historico;
+                    }
 
                 }
 
                 /*Testa com movimento para a direita*/
-                if(movimentoValido(tabuleiro, x, y, 'd')){
+                if(movimentoValido(tabuleiro, linhas, colunas, x, y, 'd')){
                     Movimento mov = movimentaDir(tabuleiro, x, y);
-                    enfila(hist, mov);
                     qtdPecas--;
 
+                    historico[(*cont)] = &mov;
+                    (*cont)++;
+
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
-                        jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol);
+                        jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol, hist, cont);
                     } else if(qtdPecas == 1 && tabuleiro[centroLin][centroCol] == 1){
-                        return hist;
+                        return historico;
                     }
 
-                    desenfila(hist);
                 }
 
                 /*Testa com movimento para baixo*/
-                if(movimentoValido(tabuleiro, x, y, 'b')){
+                if(movimentoValido(tabuleiro, linhas, colunas, x, y, 'b')){
                     Movimento mov = movimentaBaixo(tabuleiro, x, y);
-                    enfila(hist, mov);
                     qtdPecas--;
 
+                    historico[(*cont)] = &mov;
+                    (*cont)++;
+
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
-                        jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol);
+                        jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol, hist, cont);
                     } else if(qtdPecas == 1 && tabuleiro[centroLin][centroCol] == 1){
-                        return hist;
+                        return historico;
                     }
 
-                    desenfila(hist);
                 }
 
                 /*Testa com movimento para a esquerda*/
-                if(movimentoValido(tabuleiro, x, y, 'e')){
+                if(movimentoValido(tabuleiro, linhas, colunas, x, y, 'e')){
                     Movimento mov = movimentaEsq(tabuleiro, x, y);
-                    enfila(hist, mov);
                     qtdPecas--;
 
-                    if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
-                        jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol);
-                    } else if(qtdPecas == 1 && tabuleiro[centroLin][centroCol] == 1){
-                        return hist;
-                    }
+                    historico[(*cont)] = &mov;
+                    (*cont)++;
 
-                    desenfila(hist);
+                    if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
+                        jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol, hist, cont);
+                    } else if(qtdPecas == 1 && tabuleiro[centroLin][centroCol] == 1){
+                        return historico;
+                    }
                 }
             }
         }
     }
 }
 
-void init(Historico hist, int tam){
-    hist.inicio = -1;
-    hist.fim = -1;
-    hist.tam = tam;
-    hist.listMovs = (Movimento*) malloc(hist.tam);
-}
-
-bool cheia(Historico hist){
-    return hist.fim == hist.tam - 1;
-}
-
-bool vazia(Historico hist){
-    return hist.inicio == -1;
-}
-
-bool enfila(Historico hist, Movimento mov){
-    if(cheia(hist)){
-        return false;
-    }
-
-    if(vazia(hist)){
-        hist.inicio = 0;
-    }
-
-    hist.fim++;
-    hist.listMovs[hist.fim] = mov;
-    return true;
-}
-
-Movimento desenfila(Historico hist){
-    if(vazia(hist)){
-        return;
-    }
-
-    Movimento mov = hist.listMovs[hist.inicio];
-
-    if(hist.inicio == hist.fim){
-        hist.inicio = -1;
-        hist.fim = -1;
-    } else{
-        hist.inicio++;
-    }
-
-    return mov;
-}
-
-void limpaMovimento(Movimento mov){
-    mov.x0 = 0;
-    mov.y0 = 0;
-    mov.xf = 0;
-    mov.yf = 0;
-    mov.direcao = 0;
+void limpaMovimento(Movimento *mov){
+    mov->x0 = 0;
+    mov->y0 = 0;
+    mov->xf = 0;
+    mov->yf = 0;
+    mov->direcao = 0;
 }
 
 void printMov(Movimento mov){
-    setlocale(LC_ALL, "pt_BR.UTF-8");
-
-    switch (mov.direcao){
-        case 'c':
-            printf("Cima: ");
-            break;
-
-        case 'd':
-            printf("Direita: ");
-            break;
-        case 'b':
-            printf("Baixo: ");
-            break;
-        case 'e':
-            printf("Esquerda: ");
-            break;
-        default:
-            printf("Invalida!");
-            return;
-            break;
-    }
-
-    printf("(%d, %d) -> (%d, %d)", mov.x0, mov.y0, mov.xf, mov.yf);
+    printf("(%d, %d) -> (%d, %d)\n", mov.x0, mov.y0, mov.xf, mov.yf);
 }

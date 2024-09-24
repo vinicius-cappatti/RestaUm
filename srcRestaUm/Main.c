@@ -35,16 +35,27 @@ int main(){
     * 3. Casas vazias = ' ' (espaco)
     * 4. Casas cheias = 'o'
     **************************************** */
+    
+    /*Variaveis auxiliares para o backtracking*/
 
-    /*Chamada do backtracking*/
-    Historico jogadas = jogaRestaUm(tabuleiro, MAX_LINHAS, MAX_COLUNAS, NUM_INI_PECAS, LIN_CENTRO, COL_CENTRO);
-
-    /*TODO: Implementar a saida em arquivo*/
+    Movimento** auxListMovs = (Movimento**) malloc((NUM_INI_PECAS - 1) * sizeof(Movimento*));
     int cont = 0;
+    int *pcont = &cont;
+    
+    /*Chamada do backtracking*/
+    
+    Movimento** jogadas = jogaRestaUm(tabuleiro, MAX_LINHAS, MAX_COLUNAS, NUM_INI_PECAS, LIN_CENTRO, COL_CENTRO, auxListMovs, pcont);
 
-    while (!vazia(jogadas)){
-        printMov(jogadas.listMovs[cont]);
-        cont++;
+    if(jogadas == NULL){
+        printf("Erro na criação das jogadas.");
+        return 1;
+    }
+
+    int tam = sizeof(jogadas) / sizeof(Movimento*);
+    /*TODO: Implementar a saida em arquivo*/
+
+    for(int i = 0; i < tam; i++){
+        printMov(*jogadas[i]);
     }
 
     return 0;

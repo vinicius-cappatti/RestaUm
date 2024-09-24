@@ -4,29 +4,28 @@
     // Para obter mais informações, acesse: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-
         {
             "name": "Depuração de C/C++",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}/${fileBasenameNoExtension}",
+            "program": "/workspaces/RestaUm/srcRestaUm/ru", // Altere para o nome do executável gerado
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "miDebuggerPath": "/usr/bin/gdb",  // ou caminho correto do GDB
+            "miDebuggerPath": "/usr/bin/gdb",
             "setupCommands": [
-                {
-                    "description": "Habilitar a reformatação automática para gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
+              {
+                "description": "Habilitar a reformatação automática para gdb",
+                "text": "-enable-pretty-printing",
+                "ignoreFailures": true
+              }
             ],
             "preLaunchTask": "C/C++: gcc arquivo de build ativo",
             "miDebuggerArgs": "",
             "internalConsoleOptions": "openOnSessionStart",
-        }
+          }
     ]
 }
