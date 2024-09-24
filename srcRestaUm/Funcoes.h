@@ -32,6 +32,7 @@ bool vazia(Historico hist);
 /*Funcoes da struct Movimento*/
 
 void limpaMovimento(Movimento mov);
+void printMov(Movimento mov);
 
 typedef struct movimento{
     int x0;

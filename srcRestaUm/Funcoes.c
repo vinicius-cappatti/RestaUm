@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <locale.h>
  
 /*Metodo retorna se a casa tabuleiro[x][y] pode ser utilizada*/
 bool posicaoValida(int **tabuleiro, int linhas, int colunas, int x, int y){
@@ -170,10 +171,7 @@ Historico jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, in
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
                         jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol);
                     } else if(qtdPecas == 1 && tabuleiro[centroLin][centroCol] == 1){
-                        /* **********************************************************************************
-                        * TODO: implementar o que vai ser feito se encontrarmos um resultado de sucesso
-                        * em que chegamos ao tabuleiro final esperado
-                        ********************************************************************************** */
+                        return hist;
                     }
 
                     desenfila(hist);
@@ -189,10 +187,7 @@ Historico jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, in
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
                         jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol);
                     } else if(qtdPecas == 1 && tabuleiro[centroLin][centroCol] == 1){
-                        /* **********************************************************************************
-                        * TODO: implementar o que vai ser feito se encontrarmos um resultado de sucesso
-                        * em que chegamos ao tabuleiro final esperado
-                        ********************************************************************************** */
+                        return hist;
                     }
 
                     desenfila(hist);
@@ -207,10 +202,7 @@ Historico jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, in
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
                         jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol);
                     } else if(qtdPecas == 1 && tabuleiro[centroLin][centroCol] == 1){
-                        /* **********************************************************************************
-                        * TODO: implementar o que vai ser feito se encontrarmos um resultado de sucesso
-                        * em que chegamos ao tabuleiro final esperado
-                        ********************************************************************************** */
+                        return hist;
                     }
 
                     desenfila(hist);
@@ -225,10 +217,7 @@ Historico jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, in
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
                         jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol);
                     } else if(qtdPecas == 1 && tabuleiro[centroLin][centroCol] == 1){
-                        /* **********************************************************************************
-                        * TODO: implementar o que vai ser feito se encontrarmos um resultado de sucesso
-                        * em que chegamos ao tabuleiro final esperado
-                        ********************************************************************************** */
+                        return hist;
                     }
 
                     desenfila(hist);
@@ -290,4 +279,30 @@ void limpaMovimento(Movimento mov){
     mov.xf = 0;
     mov.yf = 0;
     mov.direcao = 0;
+}
+
+void printMov(Movimento mov){
+    setlocale(LC_ALL, "pt_BR.UTF-8");
+
+    switch (mov.direcao){
+        case 'c':
+            printf("Cima: ");
+            break;
+
+        case 'd':
+            printf("Direita: ");
+            break;
+        case 'b':
+            printf("Baixo: ");
+            break;
+        case 'e':
+            printf("Esquerda: ");
+            break;
+        default:
+            printf("Invalida!");
+            return;
+            break;
+    }
+
+    printf("(%d, %d) -> (%d, %d)", mov.x0, mov.y0, mov.xf, mov.yf);
 }
