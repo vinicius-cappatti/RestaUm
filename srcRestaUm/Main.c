@@ -24,15 +24,7 @@ int main(){
     setlocale(LC_ALL, "pt_BR.UTF-8"); 
 
     /*Determinacao da posicao inicial do tabuleiro*/
-    int tabuleiro[MAX_LINHAS][MAX_COLUNAS] = {       
-        {-1, -1,  1,  1,  1, -1, -1},
-        {-1, -1,  1,  1,  1, -1, -1},
-        { 1,  1,  1,  1,  1,  1,  1},
-        { 1,  1,  1,  0,  1,  1,  1},
-        { 1,  1,  1,  1,  1,  1,  1},
-        {-1, -1,  1,  1,  1, -1, -1},
-        {-1, -1,  1,  1,  1, -1, -1},
-    };
+    int **tabuleiro = criaTabuleiro();
 
     /* ****************************************
     * TODO: implementar a leitura do 

@@ -10,6 +10,32 @@
 #include <stdlib.h>
 #include <locale.h>
  
+ /*Funcao para testes onde criamos um tabuleiro padrao de resta um*/
+ int** criaTabuleiro(){
+    int **tabuleiro = (int **)malloc(7 * sizeof(int *));
+    for (int i = 0; i < 7; i++) {
+        tabuleiro[i] = (int *)malloc(7 * sizeof(int));
+    }
+
+    // Inicializando o tabuleiro com os valores desejados
+    int valores[7][7] = {
+        {-1, -1,  1,  1,  1, -1, -1},
+        {-1, -1,  1,  1,  1, -1, -1},
+        { 1,  1,  1,  1,  1,  1,  1},
+        { 1,  1,  1,  0,  1,  1,  1},
+        { 1,  1,  1,  1,  1,  1,  1},
+        {-1, -1,  1,  1,  1, -1, -1},
+        {-1, -1,  1,  1,  1, -1, -1},
+    };
+
+    // Copiando os valores do array estático para o tabuleiro dinâmico
+    for (int i = 0; i < 7; i++) {
+        for (int j = 0; j < 7; j++) {
+            tabuleiro[i][j] = valores[i][j];
+        }
+    }
+ }
+
 /*Metodo retorna se a casa tabuleiro[x][y] pode ser utilizada*/
 bool posicaoValida(int **tabuleiro, int linhas, int colunas, int x, int y){
     if(x < 0 || x > linhas || y < 0 || y > linhas){ return false; } /*Verifica se as coordenadas estao dentro do vetor*/
