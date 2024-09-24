@@ -31,6 +31,7 @@ int main(){
     * 0 representa uma casa vazia
     * 1 representa uma casa ocupada
     ****************************************** */
+
     int **tabuleiro = (int **)malloc(TAMANHO * sizeof(int *));
     for (int i = 0; i < TAMANHO; i++) {
         tabuleiro[i] = (int *)malloc(TAMANHO * sizeof(int));

@@ -24,10 +24,8 @@ void lerTabuleiro(int **tabuleiro, int numLinhas, int numColunas, char *nomeArqu
 
     // Percorre o arquivo, lendo linha por linha
     for (int i = 0; i < numLinhas + 2; i++) {  // numLinhas + 2 devido à margem (#)
-        if (fgets(linha, sizeof(linha), arquivo) == NULL) {
-            printf("Erro ao ler o arquivo.\n");
-            break;
-        }
+        
+        fgets(linha, sizeof(linha), arquivo);
 
         // Remove a nova linha (\n) se estiver presente
         removeNovaLinha(linha);
@@ -225,7 +223,7 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
 
                     historico[(*cont)] = &mov;
                     (*cont)++;
-                    printMov(historico[(*cont)]);
+                    printMov(&historico[(*cont)]);
                     printMov(&mov);
 
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
@@ -235,7 +233,7 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                     }
 
                     printf("Deletando: ");
-                    printMov(historico[(*cont)]);
+                    printMov(&historico[(*cont)]);
                     printf("\n");
                     limpaMovimento(historico[(*cont)]);
                     (*cont)--;
@@ -248,7 +246,7 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
 
                     historico[(*cont)] = &mov;
                     (*cont)++;
-                    printMov(historico[(*cont)]);
+                    printMov(&historico[(*cont)]);
                     printMov(&mov);
 
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
@@ -258,7 +256,7 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                     }
                     
                     printf("Deletando: ");
-                    printMov(historico[(*cont)]);
+                    printMov(&historico[(*cont)]);
                     printf("\n");
                     limpaMovimento(historico[(*cont)]);
                     (*cont)--;
@@ -271,7 +269,7 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
 
                     historico[(*cont)] = &mov;
                     (*cont)++;
-                    printMov(historico[(*cont)]);
+                    printMov(&historico[(*cont)]);
                     printMov(&mov);
 
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
@@ -281,7 +279,7 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                     }
 
                     printf("Deletando: ");
-                    printMov(historico[(*cont)]);
+                    printMov(&historico[(*cont)]);
                     printf("\n");
                     limpaMovimento(historico[(*cont)]);
                     (*cont)--;
@@ -294,7 +292,7 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
 
                     historico[(*cont)] = &mov;
                     (*cont)++;
-                    printMov(historico[(*cont)]);
+                    printMov(&historico[(*cont)]);
                     printMov(&mov);
 
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
@@ -305,7 +303,7 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                     
 
                     printf("Deletando: ");
-                    printMov(historico[(*cont)]);
+                    printMov(&historico[(*cont)]);
                     printf("\n");
                     limpaMovimento(historico[(*cont)]);
                     (*cont)--;
