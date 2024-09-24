@@ -59,4 +59,4 @@ bool vazia(Historico hist);
 void limpaMovimento(Movimento mov);
 void printMov(Movimento mov);
 
-#endif Funcoes
+#endif
