@@ -45,9 +45,15 @@ int main(){
     **************************************** */
 
     /*Chamada do backtracking*/
-    jogaRestaUm(tabuleiro, MAX_LINHAS, MAX_COLUNAS, NUM_INI_PECAS, LIN_CENTRO, COL_CENTRO);
+    Historico jogadas = jogaRestaUm(tabuleiro, MAX_LINHAS, MAX_COLUNAS, NUM_INI_PECAS, LIN_CENTRO, COL_CENTRO);
 
     /*TODO: Implementar a saida em arquivo*/
-    
+    int cont = 0;
+
+    while (!vazia(jogadas)){
+        printMov(jogadas.listMovs[cont]);
+        cont++;
+    }
+
     return 0;
 }

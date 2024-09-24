@@ -9,6 +9,30 @@
 
 #ifndef funcoes.h
 
+/* ******************************************************************
+* Struct Movimento representa um movimento com as caracteristicas:
+* x0: linha de partida
+* y0: coluna de partida
+* xf: linha final
+* yf: coluna final
+* direcao: a direcao do movimento (cima, baixo, esquerda ou direita)
+****************************************************************** */
+typedef struct movimento{
+    int x0;
+    int y0;
+    int xf;
+    int yf;
+    char direcao;
+} Movimento;
+
+/*Struct Historico eh uma fila de Movimentos*/
+typedef struct historico{
+    Movimento *listMovs;
+    int tam;
+    int inicio;
+    int fim;
+} Historico;
+
 /*Funcoes do jogo Resta Um*/
 
 bool posicaoValida(int **tabuleiro, int linhas, int colunas, int x, int y);
@@ -33,20 +57,5 @@ bool vazia(Historico hist);
 
 void limpaMovimento(Movimento mov);
 void printMov(Movimento mov);
-
-typedef struct movimento{
-    int x0;
-    int y0;
-    int xf;
-    int yf;
-    char direcao;
-} Movimento;
-
-typedef struct historico{
-    Movimento *listMovs;
-    int tam;
-    int inicio;
-    int fim;
-} Historico;
 
 #endif
