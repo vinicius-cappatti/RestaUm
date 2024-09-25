@@ -91,33 +91,28 @@ bool movimentoValido(int **tabuleiro, int linhas, int colunas, int x0, int y0, c
         case 'c':
 
             if((x0 - 1) < 0 || (x0 - 2) < 0){ return false; } /*Tentativa de se acessar memoria fora da matriz*/
-            if(tabuleiro[x0 - 1][y0] != 1 || tabuleiro[x0 - 2][y0] != 0){ return false;}
-
-            break;
+            if (tabuleiro[x0 - 1][y0] == 1 && tabuleiro[x0 - 2][y0] == 0){ return true; }
+            else{ return false; }
+            
         
         case 'b':
 
             if((x0 + 1) >= linhas || (x0 + 2) >= linhas){ return false; }
-            if(tabuleiro[x0 + 1][y0] != 1 || tabuleiro[x0 + 2][y0] != 0){ return false;}
-
-            break;
+            if (tabuleiro[x0 + 1][y0] == 1 && tabuleiro[x0 + 2][y0] == 0){ return true; }
+            else{ return false; }
 
         case 'e':
 
             if((y0 - 1) < 0 || (y0 - 2) < 0){ return false; }
-            if(tabuleiro[x0][y0 - 1] != 1 || tabuleiro[x0][y0 - 2] != 0){ return false;}
-
-            break;
+            if(tabuleiro[x0][y0 - 1] == 1 && tabuleiro[x0][y0 - 2] == 0){ return true; }
+            else{ return false; }
 
         case 'd':
 
             if((y0 + 1) >= colunas || (y0 + 2) >= colunas){ return false; }
-            if(tabuleiro[x0][y0 + 1] != 1 || tabuleiro[x0][y0 + 2] != 0){ return false;}
-
-            break;
+            if(tabuleiro[x0][y0 + 1] == 1 && tabuleiro[x0][y0 + 2] == 0){ return true; }
+            else{ return false; }
     }
-
-    return true;
 }
 
 Movimento movimentaCima(int **tabuleiro, int x0, int y0){
