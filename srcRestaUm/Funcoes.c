@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "Funcoes.h"
 
@@ -21,9 +22,17 @@ void removeNovaLinha(char *linha) {
 int** copiaTabuleiro(int **tabuleiro, int linhas, int colunas){
     int** tabuleiro2 = (int**) malloc(linhas * sizeof(int*));
 
-    for(int i = 0; i < linhas; i++){
-        tabuleiro2[i] = tabuleiro[i];
+    for(int x = 0; x < linhas; x++){
+        tabuleiro2[x] = (int*) malloc(colunas * sizeof(int));
     }
+
+    for(int i = 0; i < linhas; i++){
+        for(int j = 0; j < colunas; j++){
+            tabuleiro2[i][j] = tabuleiro[i][j];
+        }
+    }
+
+    return tabuleiro2;
 }
 
 /* Função que lê o arquivo de entrada e o converte em uma matriz */
@@ -224,6 +233,5 @@ void limpaMovimento(Movimento *mov){
 }
 
 void printMov(Movimento *mov){
-    setlocale(LC_ALL, "pt_BR.UTF-8");
     printf("(%d, %d) -> (%d, %d)\n", mov->x0, mov->y0, mov->xf, mov->yf);
 }

@@ -59,10 +59,12 @@ int main(){
     // Chama a função para ler o tabuleiro do arquivo e armazená-lo na matriz
     lerTabuleiro(tabuleiro, TAMANHO, TAMANHO, "entrada.txt");
 
+    int **tabuleiro2 = copiaTabuleiro(tabuleiro, TAMANHO, TAMANHO);
+
     // Exibe a matriz do tabuleiro para conferir o resultado
     for (int i = 0; i < TAMANHO; i++){
         for (int j = 0; j < TAMANHO; j++){
-            printf("%d ", tabuleiro[i][j]);
+            printf("%d ", tabuleiro2[i][j]);
         }
         printf("\n");
     }
@@ -86,6 +88,7 @@ int main(){
     }
 
     /*Imprimir as jogadas no arquivo de saida*/
+    
     
 
     // Libera a memória alocada dinamicamente antes de finalizar o programa
