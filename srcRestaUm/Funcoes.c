@@ -183,7 +183,6 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
 
                     historico[cont] = &mov;
                     cont++;
-                    printMov(&mov);
 
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
                         jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol, historico, cont);
@@ -202,7 +201,6 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
 
                     historico[cont] = &mov;
                     cont++;
-                    printMov(&mov);
 
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
                         jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol, historico, cont);
