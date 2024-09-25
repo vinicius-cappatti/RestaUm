@@ -4,14 +4,15 @@
  *    Vinícius Sanches Cappatti (RA: 10418266)
  *********************************************************************** */
 
-/*Arquivo com as funcoes implementadas para o jogo de resta um*/
-#include "Funcoes.h"
 
 /*Bibliotecas utilizadas*/
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <locale.h>
+
+/*Arquivo com as funcoes implementadas para o jogo de resta um*/
+#include "Funcoes.h"
 
 /*Constantes do programa*/
 

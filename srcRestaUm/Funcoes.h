@@ -4,12 +4,10 @@
 *    Vinícius Sanches Cappatti (RA: 10418266)
 *********************************************************************** */
 
-#include <stdio.h>
 #include <stdbool.h>
-#include <string.h>
-#include <locale.h>
 
-#ifndef Funcoes
+#ifndef FUNCOES_H
+#define FUNCOES_H
 
 /* ******************************************************************
 * Struct Movimento representa um movimento com as caracteristicas:
