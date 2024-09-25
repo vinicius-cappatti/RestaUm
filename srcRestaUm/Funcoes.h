@@ -47,7 +47,7 @@ Movimento movimentaDir(int **tabuleiro, int x0, int y0);
 Movimento movimentaBaixo(int **tabuleiro, int x0, int y0);
 Movimento movimentaEsq(int **tabuleiro, int x0, int y0);
 bool haJogadasPosiveis(int **tabuleiro, int linhas, int colunas);
-Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, int centroLin, int centroCol, Movimento** historico, int *cont);
+Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, int centroLin, int centroCol, Movimento** historico, int cont);
 
 /*Funcoes da struct Movimento*/
 

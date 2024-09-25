@@ -31,7 +31,6 @@ void lerTabuleiro(int **tabuleiro, int numLinhas, int numColunas, char *nomeArqu
     for (int i = 0; i < numLinhas + 2; i++) {  // numLinhas + 2 devido à margem (#)
         fgets(linha, sizeof(linha), arquivo);  // Lê uma linha do arquivo
         removeNovaLinha(linha);  // Remove a nova linha (\n) se estiver presente
-        printf("i=%d\n%s\n", i, linha);
 
         if (i == 0 || i == numLinhas + 1) {
             // Ignora a primeira e a última linha (margens de #)
@@ -86,7 +85,7 @@ bool movimentoValido(int **tabuleiro, int linhas, int colunas, int x0, int y0, c
     *   'd' quando mover para a DIREITA
     ******************************************** */
 
-    if(tabuleiro[x0][y0] < 1){ return false; }
+    if(tabuleiro[x0][y0] != 1){ return false; }
 
     switch (direcao){
         case 'c':
@@ -202,7 +201,7 @@ bool haJogadasPosiveis(int **tabuleiro, int linhas, int colunas){
 }
 
 /*Metodo com backtracking do resta um*/
-Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, int centroLin, int centroCol, Movimento** historico, int *cont){
+Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, int centroLin, int centroCol, Movimento** historico, int cont){
     
     for(int x = 0; x < linhas; x++){
         for(int y = 0; y < colunas; y++){
@@ -213,10 +212,8 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                     Movimento mov = movimentaCima(tabuleiro, x, y);
                     qtdPecas--;
 
-                    historico[(*cont)] = &mov;
-                    (*cont)++;
-                    printMov(historico[(*cont)]);
-                    printMov(&mov);
+                    historico[cont] = &mov;
+                    cont++;
 
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
                         jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol, historico, cont);
@@ -224,11 +221,8 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                         return historico;
                     }
 
-                    printf("Deletando: ");
-                    printMov(historico[(*cont)]);
-                    printf("\n");
-                    limpaMovimento(historico[(*cont)]);
-                    (*cont)--;
+                    limpaMovimento(historico[cont]);
+                    cont--;
                 }
 
                 /*Testa com movimento para a direita*/
@@ -236,10 +230,8 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                     Movimento mov = movimentaDir(tabuleiro, x, y);
                     qtdPecas--;
 
-                    historico[(*cont)] = &mov;
-                    (*cont)++;
-                    printMov(historico[(*cont)]);
-                    printMov(&mov);
+                    historico[cont] = &mov;
+                    cont++;
 
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
                         jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol, historico, cont);
@@ -247,11 +239,8 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                         return historico;
                     }
                     
-                    printf("Deletando: ");
-                    printMov(&historico[(*cont)]);
-                    printf("\n");
-                    limpaMovimento(historico[(*cont)]);
-                    (*cont)--;
+                    limpaMovimento(historico[cont]);
+                    cont--;
                 }
 
                 /*Testa com movimento para baixo*/
@@ -259,9 +248,8 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                     Movimento mov = movimentaBaixo(tabuleiro, x, y);
                     qtdPecas--;
 
-                    historico[(*cont)] = &mov;
-                    (*cont)++;
-                    printMov(&historico[(*cont)]);
+                    historico[cont] = &mov;
+                    cont++;
                     printMov(&mov);
 
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
@@ -270,11 +258,8 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                         return historico;
                     }
 
-                    printf("Deletando: ");
-                    printMov(historico[(*cont)]);
-                    printf("\n");
-                    limpaMovimento(historico[(*cont)]);
-                    (*cont)--;
+                    limpaMovimento(historico[cont]);
+                    cont--;
                 }
 
                 /*Testa com movimento para a esquerda*/
@@ -282,9 +267,8 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                     Movimento mov = movimentaEsq(tabuleiro, x, y);
                     qtdPecas--;
 
-                    historico[(*cont)] = &mov;
-                    (*cont)++;
-                    printMov(historico[(*cont)]);
+                    historico[cont] = &mov;
+                    cont++;
                     printMov(&mov);
 
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
@@ -293,12 +277,8 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                         return historico;
                     }
                     
-
-                    printf("Deletando: ");
-                    printMov(historico[(*cont)]);
-                    printf("\n");
-                    limpaMovimento(historico[(*cont)]);
-                    (*cont)--;
+                    limpaMovimento(historico[cont]);
+                    cont--;
                 }
             }
         }
@@ -314,5 +294,6 @@ void limpaMovimento(Movimento *mov){
 }
 
 void printMov(Movimento *mov){
-    printf("(%d, %d) -> (%d, %d)\n", mov->x0, mov->y0, mov->xf, mov->yf);
+    setlocale(LC_ALL, "pt_BR.UTF-8");
+    printf("Direção (%c) (%d, %d) -> (%d, %d)\n", mov->direcao, mov->x0, mov->y0, mov->xf, mov->yf);
 }
