@@ -84,6 +84,9 @@ int main(){
         printMov(jogadas[i]);
     }
 
+    /*Imprimir as jogadas no arquivo de saida*/
+    
+
     // Libera a memória alocada dinamicamente antes de finalizar o programa
     for (int i = 0; i < TAMANHO; i++){
         free(tabuleiro[i]);
