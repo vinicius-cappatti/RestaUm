@@ -41,6 +41,7 @@ bool posicaoValida(int **tabuleiro, int linhas, int colunas, int x, int y);
 bool finalizou(int **tabuleiro, int **gabarito, int linhas, int colunas);
 bool movimentoValido(int **tabuleiro, int tamanho, int x0, int y0, int xf, int yf);
 Movimento movimenta(int **tabuleiro, int x0, int y0, int xf, int yf);
+void desfazMovimento(int **tabuleiro, int x0, int y0, int xf, int yf);
 bool haJogadasPosiveis(int **tabuleiro, int linhas, int colunas);
 Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, int centroLin, int centroCol, Movimento** historico, int cont);
 

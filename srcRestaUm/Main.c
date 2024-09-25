@@ -97,5 +97,10 @@ int main(){
     }
     free(tabuleiro);
 
+    for (int i = 0; i < TAMANHO; i++){
+        free(tabuleiro2[i]);
+    }
+    free(tabuleiro2);
+
     return 0;
 }

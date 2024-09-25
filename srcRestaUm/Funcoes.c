@@ -110,13 +110,14 @@ bool movimentoValido(int **tabuleiro, int tamanho, int x0, int y0, int xf, int y
 }
 
 Movimento movimenta(int **tabuleiro, int x0, int y0, int xf, int yf){
-    tabuleiro[x0][y0] = 0;
-    tabuleiro[xf][yf] = 1;
+    tabuleiro[x0][y0] = 0; /*Posicao inicial do movimento*/
+    tabuleiro[xf][yf] = 1; /*Posicao final do movimento*/
 
     int xmedia = (x0 + xf) / 2;
     int ymedia = (y0 + yf) / 2;
 
-    tabuleiro[xmedia][ymedia] = 0;
+    /*Representa a casa onde esta a peca que sai do tabuleiro*/
+    tabuleiro[xmedia][ymedia] = 0; 
 
     Movimento mov;
 
@@ -126,6 +127,17 @@ Movimento movimenta(int **tabuleiro, int x0, int y0, int xf, int yf){
     mov.yf = yf;
 
     return mov;
+}
+
+void desfazMovimento(int **tabuleiro, int x0, int y0, int xf, int yf){
+    tabuleiro[x0][y0] = 1; /*Retorna a peca para a posicao inicial*/
+    tabuleiro[xf][yf] = 0; /*Esvazia a casa da posicao final*/
+    
+    int xmedia = (x0 + xf) / 2;
+    int ymedia = (y0 + yf) / 2;
+
+    /*Insere de volta no tabuleiro a peca que havia sido retirada*/
+    tabuleiro[xmedia][ymedia] = 1;
 }
 
 /*Metodo retorna se ha pelo menos uma jogada possivel a ser feita*/
@@ -163,8 +175,9 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                         return historico;
                     }
 
-                    limpaMovimento(historico[cont]);
+                    limpaMovimento(historico[cont]); /*Retira o movimento do historico*/
                     cont--;
+                    desfazMovimento(tabuleiro, x, y, x - 2, y); /*Retorna o tabuleiro para a posicao anterior ao movimento*/
                 }
 
                 /*Testa com movimento para a direita*/
@@ -181,8 +194,9 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                         return historico;
                     }
                     
-                    limpaMovimento(historico[cont]);
+                    limpaMovimento(historico[cont]); /*Retira o movimento do historico*/
                     cont--;
+                    desfazMovimento(tabuleiro, x, y, x, y + 2); /*Retorna o tabuleiro para a posicao anterior ao movimento*/
                 }
 
                 /*Testa com movimento para baixo*/
@@ -199,8 +213,9 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                         return historico;
                     }
 
-                    limpaMovimento(historico[cont]);
+                    limpaMovimento(historico[cont]); /*Retira o movimento do historico*/
                     cont--;
+                    desfazMovimento(tabuleiro, x, y, x + 2, y); /*Retorna o tabuleiro para a posicao anterior ao movimento*/
                 }
 
                 /*Testa com movimento para a esquerda*/
@@ -217,8 +232,9 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                         return historico;
                     }
                     
-                    limpaMovimento(historico[cont]);
+                    limpaMovimento(historico[cont]); /*Retira o movimento do historico*/
                     cont--;
+                    desfazMovimento(tabuleiro, x, y, x, y - 2); /*Retorna o tabuleiro para a posicao anterior ao movimento*/
                 }
             }
         }
