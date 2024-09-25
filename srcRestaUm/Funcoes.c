@@ -9,11 +9,20 @@
 /*Funcao que le o arquivo de entrada e o converte em uma matriz*/
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 void removeNovaLinha(char *linha) {
     char *pos;
     if ((pos = strchr(linha, '\n')) != NULL) {
         *pos = '\0';
+    }
+}
+
+int** copiaTabuleiro(int **tabuleiro, int linhas, int colunas){
+    int** tabuleiro2 = (int**) malloc(linhas * sizeof(int*));
+
+    for(int i = 0; i < linhas; i++){
+        tabuleiro2[i] = tabuleiro[i];
     }
 }
 
@@ -75,110 +84,20 @@ bool finalizou(int **tabuleiro, int **gabarito, int linhas, int colunas){
 }
 
 /*Metodo retorna se a peca da posicao tabuleiro[x0][y0] pode ser movida conforme a direcao*/
-bool movimentoValido(int **tabuleiro, int linhas, int colunas, int x0, int y0, char direcao){
+bool movimentoValido(int **tabuleiro, int tamanho, int x0, int y0, int xf, int yf){
+	
+	if(tabuleiro[x0][y0] != 1){ return false; }
+	
+	if(xf < 0 || xf >= tamanho || yf < 0 || yf >= tamanho){ return false; } // Fora dos limites da matriz
+	
+	if(tabuleiro[xf][yf] != 0){ return false; }
+	
+	int xmedia = (x0 + xf) / 2;
+	int ymedia = (y0 + yf) / 2;
+	
+	if(tabuleiro[xmedia][ymedia] != 1){ return false; }
 
-    /* ********************************************
-    * Possiveis valores da variavel direcao sao:
-    *   'c' quando mover para CIMA
-    *   'b' quando mover para BAIXO
-    *   'e' quando mover para a ESQUERDA
-    *   'd' quando mover para a DIREITA
-    ******************************************** */
-
-    if(tabuleiro[x0][y0] != 1){ return false; }
-
-    switch (direcao){
-        case 'c':
-
-            if((x0 - 1) < 0 || (x0 - 2) < 0){ return false; } /*Tentativa de se acessar memoria fora da matriz*/
-            if (tabuleiro[x0 - 1][y0] == 1 && tabuleiro[x0 - 2][y0] == 0){ return true; }
-            else{ return false; }
-            
-        
-        case 'b':
-
-            if((x0 + 1) >= linhas || (x0 + 2) >= linhas){ return false; }
-            if (tabuleiro[x0 + 1][y0] == 1 && tabuleiro[x0 + 2][y0] == 0){ return true; }
-            else{ return false; }
-
-        case 'e':
-
-            if((y0 - 1) < 0 || (y0 - 2) < 0){ return false; }
-            if(tabuleiro[x0][y0 - 1] == 1 && tabuleiro[x0][y0 - 2] == 0){ return true; }
-            else{ return false; }
-
-        case 'd':
-
-            if((y0 + 1) >= colunas || (y0 + 2) >= colunas){ return false; }
-            if(tabuleiro[x0][y0 + 1] == 1 && tabuleiro[x0][y0 + 2] == 0){ return true; }
-            else{ return false; }
-    }
-}
-
-Movimento movimentaCima(int **tabuleiro, int x0, int y0){
-    tabuleiro[x0][y0] = 0; /*Remove a peça da posicao inicial*/
-    Movimento mov;
-    
-    tabuleiro[x0 - 1][y0] = 0;
-    tabuleiro[x0 - 2][y0] = 1;
-    
-    mov.x0 = x0;
-    mov.y0 = y0;
-    mov.xf = x0 - 2;
-    mov.yf = y0;
-    mov.direcao = 'c'; /*Simboliza que a direcao do movimento eh para cima*/
-
-    return mov;
-}
-
-Movimento movimentaDir(int **tabuleiro, int x0, int y0){
-    tabuleiro[x0][y0] = 0; /*Remove a peça da posicao inicial*/
-    Movimento mov;
-
-    tabuleiro[x0][y0 + 1] = 0;
-    tabuleiro[x0][y0 + 2] = 1;
-
-    mov.x0 = x0;
-    mov.y0 = y0;
-    mov.xf = x0;
-    mov.yf = y0 + 2;
-    mov.direcao = 'd'; /*Simboliza que a direcao do tabuleiro eh para a direita*/
-
-    return mov;
-}
-
-Movimento movimentaBaixo(int **tabuleiro, int x0, int y0){
-    tabuleiro[x0][y0] = 0; /*Remove a peça da posicao inicial*/
-
-    Movimento mov;
-
-    tabuleiro[x0 + 1][y0] = 0;
-    tabuleiro[x0 + 2][y0] = 1;
-
-    mov.x0 = x0;
-    mov.y0 = y0;
-    mov.xf = x0 + 2;
-    mov.yf = y0;
-    mov.direcao = 'b'; /*Simboliza que a direcao do movimento eh para baixo*/
-
-    return mov;
-}
-
-Movimento movimentaEsq(int **tabuleiro, int x0, int y0){
-    tabuleiro[x0][y0] = 0; /*Remove a peça da posicao inicial*/
-
-    Movimento mov;
-
-    tabuleiro[x0][y0 - 1] = 0;
-    tabuleiro[x0][y0 - 2] = 1;
-    
-    mov.x0 = x0;
-    mov.y0 = y0;
-    mov.xf = x0;
-    mov.yf = y0 - 2;
-    mov.direcao = 'e'; /*Simboliza que a direcao do movimento eh para a esquerda*/
-
-    return mov;
+	return true;
 }
 
 /*Metodo retorna se ha pelo menos uma jogada possivel a ser feita*/
@@ -203,8 +122,8 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
             if(posicaoValida(tabuleiro, linhas, colunas, x, y)){
                 
                 /*Testa com movimento para cima*/
-                if(movimentoValido(tabuleiro, linhas, colunas, x, y, 'c')){
-                    Movimento mov = movimentaCima(tabuleiro, x, y);
+                if(movimentoValido(tabuleiro, linhas, x, y, x - 2, y)){
+                    Movimento mov = movimenta(tabuleiro, x, y, x - 2, y);
                     qtdPecas--;
 
                     historico[cont] = &mov;
@@ -222,7 +141,7 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
 
                 /*Testa com movimento para a direita*/
                 if(movimentoValido(tabuleiro, linhas, colunas, x, y, 'd')){
-                    Movimento mov = movimentaDir(tabuleiro, x, y);
+                    Movimento mov = movimenta(tabuleiro, x, y, x, y + 2);
                     qtdPecas--;
 
                     historico[cont] = &mov;
@@ -240,7 +159,7 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
 
                 /*Testa com movimento para baixo*/
                 if(movimentoValido(tabuleiro, linhas, colunas, x, y, 'b')){
-                    Movimento mov = movimentaBaixo(tabuleiro, x, y);
+                    Movimento mov = movimenta(tabuleiro, x, y, x + 2, y);
                     qtdPecas--;
 
                     historico[cont] = &mov;
@@ -259,7 +178,7 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
 
                 /*Testa com movimento para a esquerda*/
                 if(movimentoValido(tabuleiro, linhas, colunas, x, y, 'e')){
-                    Movimento mov = movimentaEsq(tabuleiro, x, y);
+                    Movimento mov = movimenta(tabuleiro, x, y, x, y - 2);
                     qtdPecas--;
 
                     historico[cont] = &mov;
