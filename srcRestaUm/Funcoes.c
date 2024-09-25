@@ -7,23 +7,31 @@
 #include "Funcoes.h"
  
 /*Funcao que le o arquivo de entrada e o converte em uma matriz*/
+#include <stdio.h>
+#include <stdlib.h>
+
+void removeNovaLinha(char *linha) {
+    char *pos;
+    if ((pos = strchr(linha, '\n')) != NULL) {
+        *pos = '\0';
+    }
+}
+
+/* Função que lê o arquivo de entrada e o converte em uma matriz */
 void lerTabuleiro(int **tabuleiro, int numLinhas, int numColunas, char *nomeArquivo) {
     FILE *arquivo = fopen(nomeArquivo, "r");  // Abre o arquivo em modo de leitura
-
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo.\n");
         return;
     }
 
-    char linha[numColunas + 3];  // Ajusta para possível '\n' e '\0'
+    char linha[200000];  // Ajusta para possível '\n' e '\0'
 
     // Percorre o arquivo, lendo linha por linha
     for (int i = 0; i < numLinhas + 2; i++) {  // numLinhas + 2 devido à margem (#)
-        
-        fgets(linha, sizeof(linha), arquivo);
-
-        // Remove a nova linha (\n) se estiver presente
-        removeNovaLinha(linha);
+        fgets(linha, sizeof(linha), arquivo);  // Lê uma linha do arquivo
+        removeNovaLinha(linha);  // Remove a nova linha (\n) se estiver presente
+        printf("i=%d\n%s\n", i, linha);
 
         if (i == 0 || i == numLinhas + 1) {
             // Ignora a primeira e a última linha (margens de #)
@@ -31,32 +39,21 @@ void lerTabuleiro(int **tabuleiro, int numLinhas, int numColunas, char *nomeArqu
         }
 
         // Processa apenas as linhas internas (sem a margem)
-        for (int j = 1; j <= numColunas; j++) {
-            char aux = linha[j];
-            
-            while(aux != ' ' && aux != 'o' && aux != '#'){
-                aux = linha[j + 1];    
+        for (int j = 1; j <= numColunas; j++) {  // Começa em 1 e vai até numColunas
+            char caractere = linha[j];  // Pega o caractere correspondente
+
+            // Converte os caracteres para os valores da matriz
+            if (caractere == '#') {
+                tabuleiro[i - 1][j - 1] = -1;  // Margem
+            } else if (caractere == 'o') {
+                tabuleiro[i - 1][j - 1] = 1;   // Espaço ocupado
+            } else if (caractere == ' ') {
+                tabuleiro[i - 1][j - 1] = 0;   // Espaço vazio
             }
-            
-            if (aux == '#') {
-                tabuleiro[i - 1][j - 1] = -1;
-            } else if (aux == 'o') {
-                tabuleiro[i - 1][j - 1] = 1;
-            } else if (aux == ' ') {
-                tabuleiro[i - 1][j - 1] = 0;
-            }
-            
         }
     }
 
     fclose(arquivo);  // Fecha o arquivo
-}
-
-void removeNovaLinha(char *linha) {
-    size_t len = strlen(linha);
-    if (len > 0 && linha[len - 1] == '\n') {
-        linha[len - 1] = '\0';  // Remove o '\n'
-    }
 }
 
 /*Metodo retorna se a casa tabuleiro[x][y] pode ser utilizada*/
