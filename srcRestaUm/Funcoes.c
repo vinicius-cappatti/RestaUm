@@ -97,17 +97,36 @@ bool movimentoValido(int **tabuleiro, int tamanho, int x0, int y0, int xf, int y
 	
 	if(tabuleiro[xmedia][ymedia] != 1){ return false; }
 
-	return true;
+	return true;
+}
+
+Movimento movimenta(int **tabuleiro, int x0, int y0, int xf, int yf){
+    tabuleiro[x0][y0] = 0;
+    tabuleiro[xf][yf] = 1;
+
+    int xmedia = (x0 + xf) / 2;
+    int ymedia = (y0 + yf) / 2;
+
+    tabuleiro[xmedia][ymedia] = 0;
+
+    Movimento mov;
+
+    mov.x0 = x0;
+    mov.xf = xf;
+    mov.y0 = y0;
+    mov.yf = yf;
+
+    return mov;
 }
 
 /*Metodo retorna se ha pelo menos uma jogada possivel a ser feita*/
 bool haJogadasPosiveis(int **tabuleiro, int linhas, int colunas){
     for(int x = 0; x < linhas; x++){
         for(int y = 0; y < colunas; y++){
-            if(movimentoValido(tabuleiro, linhas, colunas, x, y, 'c')){ return true; } /*Verifica movimento para a cima*/
-            if(movimentoValido(tabuleiro, linhas, colunas, x, y, 'd')){ return true; } /*Verifica movimento para a direita*/
-            if(movimentoValido(tabuleiro, linhas, colunas, x, y, 'b')){ return true; } /*Verifica movimento para a baixo*/
-            if(movimentoValido(tabuleiro, linhas, colunas, x, y, 'e')){ return true; } /*Verifica movimento para a esquerda*/
+            if(movimentoValido(tabuleiro, linhas, x, y, x - 2, y)){ return true; } /*Verifica movimento para a cima*/
+            if(movimentoValido(tabuleiro, linhas, x, y, x, y + 2)){ return true; } /*Verifica movimento para a direita*/
+            if(movimentoValido(tabuleiro, linhas, x, y, x + 2, y)){ return true; } /*Verifica movimento para a baixo*/
+            if(movimentoValido(tabuleiro, linhas, x, y, x, y - 2)){ return true; } /*Verifica movimento para a esquerda*/
         }
     }
 
@@ -140,7 +159,7 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                 }
 
                 /*Testa com movimento para a direita*/
-                if(movimentoValido(tabuleiro, linhas, colunas, x, y, 'd')){
+                if(movimentoValido(tabuleiro, linhas, x, y, x, y + 2)){
                     Movimento mov = movimenta(tabuleiro, x, y, x, y + 2);
                     qtdPecas--;
 
@@ -158,7 +177,7 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                 }
 
                 /*Testa com movimento para baixo*/
-                if(movimentoValido(tabuleiro, linhas, colunas, x, y, 'b')){
+                if(movimentoValido(tabuleiro, linhas, x, y, x + 2, y)){
                     Movimento mov = movimenta(tabuleiro, x, y, x + 2, y);
                     qtdPecas--;
 
@@ -177,7 +196,7 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                 }
 
                 /*Testa com movimento para a esquerda*/
-                if(movimentoValido(tabuleiro, linhas, colunas, x, y, 'e')){
+                if(movimentoValido(tabuleiro, linhas, x, y, x, y - 2)){
                     Movimento mov = movimenta(tabuleiro, x, y, x, y - 2);
                     qtdPecas--;
 
@@ -204,10 +223,9 @@ void limpaMovimento(Movimento *mov){
     mov->y0 = 0;
     mov->xf = 0;
     mov->yf = 0;
-    mov->direcao = 0;
 }
 
 void printMov(Movimento *mov){
     setlocale(LC_ALL, "pt_BR.UTF-8");
-    printf("Direção (%c) (%d, %d) -> (%d, %d)\n", mov->direcao, mov->x0, mov->y0, mov->xf, mov->yf);
+    printf("(%d, %d) -> (%d, %d)\n", mov->x0, mov->y0, mov->xf, mov->yf);
 }

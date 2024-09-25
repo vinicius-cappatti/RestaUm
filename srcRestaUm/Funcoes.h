@@ -24,7 +24,6 @@ typedef struct movimento{
     int y0;
     int xf;
     int yf;
-    char direcao;
 } Movimento;
 
 /*Struct Historico eh uma fila de Movimentos*/
@@ -41,7 +40,7 @@ void lerTabuleiro(int **tabuleiro, int numLinhas, int numColunas, char *nomeArqu
 void removeNovaLinha(char *linha);
 bool posicaoValida(int **tabuleiro, int linhas, int colunas, int x, int y);
 bool finalizou(int **tabuleiro, int **gabarito, int linhas, int colunas);
-bool movimentoValido(int **tabuleiro, int linhas, int colunas, int x0, int y0, char direcao);
+bool movimentoValido(int **tabuleiro, int tamanho, int x0, int y0, int xf, int yf);
 Movimento movimenta(int **tabuleiro, int x0, int y0, int xf, int yf);
 bool haJogadasPosiveis(int **tabuleiro, int linhas, int colunas);
 Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, int centroLin, int centroCol, Movimento** historico, int cont);
