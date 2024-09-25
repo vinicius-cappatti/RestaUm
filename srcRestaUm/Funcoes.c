@@ -3,13 +3,13 @@
 *    Thomaz de Souza Scopel (RA: 10417183)
 *    Vinícius Sanches Cappatti (RA: 10418266)
 *********************************************************************** */
-
-#include "Funcoes.h"
  
 /*Funcao que le o arquivo de entrada e o converte em uma matriz*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+
+#include "Funcoes.h"
 
 void removeNovaLinha(char *linha) {
     char *pos;
