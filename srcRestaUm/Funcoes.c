@@ -166,7 +166,8 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                     Movimento mov = movimenta(tabuleiro, x, y, x - 2, y);
                     qtdPecas--;
 
-                    historico[cont] = &mov;
+                    historico[cont] = (Movimento*) malloc(sizeof(Movimento));
+                    *historico[cont] = mov;
                     cont++;
 
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
@@ -175,9 +176,15 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                         return historico;
                     }
 
-                    limpaMovimento(historico[cont]); /*Retira o movimento do historico*/
+                    /* ************************************
+                    * TODO: funcao limpaMovimento ta
+                    * sendo chamada com o parametro errado
+                    ************************************ */
+                    //printf("Limpando movimento para cima");
+                    limpaMovimento(historico[cont - 1]); /*Retira o movimento do historico*/
                     cont--;
                     desfazMovimento(tabuleiro, x, y, x - 2, y); /*Retorna o tabuleiro para a posicao anterior ao movimento*/
+                    qtdPecas++;
                 }
 
                 /*Testa com movimento para a direita*/
@@ -185,7 +192,8 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                     Movimento mov = movimenta(tabuleiro, x, y, x, y + 2);
                     qtdPecas--;
 
-                    historico[cont] = &mov;
+                    historico[cont] = (Movimento*) malloc(sizeof(Movimento));
+                    *historico[cont] = mov;
                     cont++;
 
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
@@ -194,9 +202,12 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                         return historico;
                     }
                     
-                    limpaMovimento(historico[cont]); /*Retira o movimento do historico*/
+                    
+                    //printf("Limpando movimento para a direita");
+                    limpaMovimento(historico[cont - 1]); /*Retira o movimento do historico*/
                     cont--;
                     desfazMovimento(tabuleiro, x, y, x, y + 2); /*Retorna o tabuleiro para a posicao anterior ao movimento*/
+                    qtdPecas++;
                 }
 
                 /*Testa com movimento para baixo*/
@@ -204,7 +215,8 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                     Movimento mov = movimenta(tabuleiro, x, y, x + 2, y);
                     qtdPecas--;
 
-                    historico[cont] = &mov;
+                    historico[cont] = (Movimento*) malloc(sizeof(Movimento));
+                    *historico[cont] = mov;
                     cont++;
 
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
@@ -213,9 +225,11 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                         return historico;
                     }
 
-                    limpaMovimento(historico[cont]); /*Retira o movimento do historico*/
+                    //printf("Limpando movimento para baixo");
+                    limpaMovimento(historico[cont - 1]); /*Retira o movimento do historico*/
                     cont--;
                     desfazMovimento(tabuleiro, x, y, x + 2, y); /*Retorna o tabuleiro para a posicao anterior ao movimento*/
+                    qtdPecas++;
                 }
 
                 /*Testa com movimento para a esquerda*/
@@ -223,7 +237,8 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                     Movimento mov = movimenta(tabuleiro, x, y, x, y - 2);
                     qtdPecas--;
 
-                    historico[cont] = &mov;
+                    historico[cont] = (Movimento*) malloc(sizeof(Movimento));
+                    *historico[cont] = mov;
                     cont++;
 
                     if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
@@ -232,9 +247,12 @@ Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, 
                         return historico;
                     }
                     
-                    limpaMovimento(historico[cont]); /*Retira o movimento do historico*/
+                    
+                    //printf("Limpando movimento para a esquerda");
+                    limpaMovimento(historico[cont - 1]); /*Retira o movimento do historico*/
                     cont--;
                     desfazMovimento(tabuleiro, x, y, x, y - 2); /*Retorna o tabuleiro para a posicao anterior ao movimento*/
+                    qtdPecas++;
                 }
             }
         }

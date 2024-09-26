@@ -61,19 +61,19 @@ int main(){
 
     int **tabuleiro2 = copiaTabuleiro(tabuleiro, TAMANHO, TAMANHO);
 
-    // Exibe a matriz do tabuleiro para conferir o resultado
-    for (int i = 0; i < TAMANHO; i++){
-        for (int j = 0; j < TAMANHO; j++){
-            printf("%d ", tabuleiro2[i][j]);
-        }
-        printf("\n");
-    }
-
     Movimento** jogadas = (Movimento**) malloc((NUM_INI_PECAS - 1) * sizeof(Movimento*));
+    for (int i = 0; i < (NUM_INI_PECAS - 1); i++) {
+        jogadas[i] = (Movimento*) malloc(sizeof(Movimento));
+    }
+    
     int cont = 0;
     /*Chamada do backtracking*/
     
+    printf("*** JOGO DE RESTA UM ***\nA execução pode demorar alguns minutos.");
+
     jogadas = jogaRestaUm(tabuleiro, TAMANHO, TAMANHO, NUM_INI_PECAS, LIN_CENTRO, COL_CENTRO, jogadas, cont);
+
+    printf("Resultado encontrado!\n");
 
     if(jogadas == NULL){
         printf("Erro na criação das jogadas.");
@@ -121,7 +121,10 @@ int main(){
     
     fclose(saida);
 
+    printf("Resultado salvo em restaum.out\n");
     // Libera a memória alocada dinamicamente antes de finalizar o programa
+    free(jogadas);
+
     for (int i = 0; i < TAMANHO; i++){
         free(tabuleiro[i]);
     }
