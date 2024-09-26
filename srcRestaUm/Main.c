@@ -89,7 +89,37 @@ int main(){
 
     /*Imprimir as jogadas no arquivo de saida*/
     
+    FILE *saida;
+
+    saida = fopen("restaum.out", "w");
+
+    if(saida == NULL){
+        printf("Erro ao abrir o arquivo de saída.");
+        return 1;
+    }
+
+    for(int i = 0; i < sizeof(jogadas); i++){
+
+        fprintf(saida, "#########\n");
+        for(int x = 0; x < TAMANHO; x++){
+            fprintf(saida, "#");
+            for(int y = 0; y < TAMANHO; y++){
+                if(tabuleiro2[x][y] == -1){
+                    fprintf(saida, "#");
+                } else if(tabuleiro2[x][y] == 0){
+                    fprintf(saida, " ");
+                } else if(tabuleiro2[x][y] == 1){
+                    fprintf(saida, "o");
+                }
+            }
+            fprintf(saida, "#\n");
+        }
+        fprintf(saida, "#########\n");
+
+        movimenta(tabuleiro2, jogadas[i]->x0, jogadas[i]->y0, jogadas[i]->xf, jogadas[i]->yf);
+    }
     
+    fclose(saida);
 
     // Libera a memória alocada dinamicamente antes de finalizar o programa
     for (int i = 0; i < TAMANHO; i++){
