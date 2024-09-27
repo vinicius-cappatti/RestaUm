@@ -154,12 +154,65 @@ bool haJogadasPosiveis(int **tabuleiro, int linhas, int colunas){
     return false;
 }
 
+Movimento direcaoMovimento(int **tabuleiro, int linhas, int x, int y, char direcao) {
+    switch (direcao) {
+        case 'c':
+            movimenta(tabuleiro, linhas, x, y, +2, 0);
+        case 'b':
+            movimenta(tabuleiro, linhas, x, y, +2, 0);
+        case 'e':
+
+        case 'd':
+
+        default:
+            break;
+    }
+}
+
+/* Variaveis globais (tabuleiro, tamanho da matriz, historico) 
+*  Fluxograma: avaliar entrada/saida, transformar a entrada no padrao do programa como matriz,
+*              avaliar movimentos validos (se a peça pode ser movida), fazer busca pra cada um 
+*              dos movientos validos, ir gravando no historico como stack os movimentos
+* 
+*
+*/
+
+void testaMovimentos (int **tabuleiro, int linhas, int x, int y, int dx, int dy) {
+    if(movimentoValido(tabuleiro, linhas, x, y, x + dx, y + dy)){
+                    Movimento mov = movimenta(tabuleiro, x, y, x + dx, y + dy);
+                    qtdPecas--;
+
+                    historico[cont] = (Movimento*) malloc(sizeof(Movimento));
+                    *historico[cont] = mov;
+                    cont++;
+
+                    if(qtdPecas > 1 && haJogadasPosiveis(tabuleiro, linhas, colunas)){
+                        jogaRestaUm(tabuleiro, linhas, colunas, qtdPecas, centroLin, centroCol, historico, cont);
+                    } else if(qtdPecas == 1 && tabuleiro[centroLin][centroCol] == 1){
+                        return historico;
+                    }
+
+                    /* ************************************
+                    * TODO: funcao limpaMovimento ta
+                    * sendo chamada com o parametro errado
+                    ************************************ */
+                    //printf("Limpando movimento para cima");
+                    limpaMovimento(historico[cont - 1]); /*Retira o movimento do historico*/
+                    cont--;
+                    desfazMovimento(tabuleiro, x, y, x + dx, y + dy); /*Retorna o tabuleiro para a posicao anterior ao movimento*/
+                    qtdPecas++;
+    }
+}
+
+
 /*Metodo com backtracking do resta um*/
 Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, int centroLin, int centroCol, Movimento** historico, int cont){
     
     for(int x = 0; x < linhas; x++){
         for(int y = 0; y < colunas; y++){
             if(posicaoValida(tabuleiro, linhas, colunas, x, y)){
+
+                //TODO: fazer função que passse os parametros reduzindo ifs
                 
                 /*Testa com movimento para cima*/
                 if(movimentoValido(tabuleiro, linhas, x, y, x - 2, y)){
