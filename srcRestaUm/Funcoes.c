@@ -104,14 +104,6 @@ void lerTabuleiro(char *nomeArquivo) {
     fclose(arquivo);  // Fecha o arquivo
 }
 
-/*Metodo retorna se a casa tabuleiro[x][y] pode ser utilizada*/
-bool posicaoValida(int x, int y){
-    if(x < 0 || x >= TAMANHO || y < 0 || y >= TAMANHO){ return false; } /*Verifica se as coordenadas estao dentro do vetor*/
-    if(tabuleiro[x][y] == -1){ return false; } /*Casas com valor -1 sao invalidas para movimentacao de pecas*/
-
-    return true;
-}
-
 /*Metodo retorna se a peca da posicao tabuleiro[x0][y0] pode ser movida conforme a direcao*/
 bool movimentoValido(int x0, int y0, int xf, int yf){
 	
@@ -151,6 +143,17 @@ void movimenta(int x0, int y0, int xf, int yf){
     cont++;
 }
 
+void movimentaTab2(int x0, int y0, int xf, int yf){
+    tabuleiro[x0][y0] = 0; /*Posicao inicial do movimento*/
+    tabuleiro[xf][yf] = 1; /*Posicao final do movimento*/
+
+    int xmedia = (x0 + xf) / 2;
+    int ymedia = (y0 + yf) / 2;
+
+    /*Representa a casa onde esta a peca que sai do tabuleiro*/
+    tabuleiro[xmedia][ymedia] = 0; 
+}
+
 void desfazMovimento(int x0, int y0, int xf, int yf){
     tabuleiro[x0][y0] = 1; /*Retorna a peca para a posicao inicial*/
     tabuleiro[xf][yf] = 0; /*Esvazia a casa da posicao final*/
@@ -162,20 +165,6 @@ void desfazMovimento(int x0, int y0, int xf, int yf){
     tabuleiro[xmedia][ymedia] = 1;
 }
 
-/*Metodo retorna se ha pelo menos uma jogada possivel a ser feita*/
-bool haJogadasPosiveis(){
-    for(int x = 0; x < TAMANHO; x++){
-        for(int y = 0; y < TAMANHO; y++){
-            if(movimentoValido(x, y, x - 2, y)){ return true; } /*Verifica movimento para a cima*/
-            if(movimentoValido(x, y, x, y + 2)){ return true; } /*Verifica movimento para a direita*/
-            if(movimentoValido(x, y, x + 2, y)){ return true; } /*Verifica movimento para a baixo*/
-            if(movimentoValido(x, y, x, y - 2)){ return true; } /*Verifica movimento para a esquerda*/
-        }
-    }
-
-    return false;
-}
-
 /* Variaveis globais (tabuleiro, TAMANHO da matriz, historico) 
 *  Fluxograma: avaliar entrada/saida, transformar a entrada no padrao do programa como matriz,
 *              avaliar movimentos validos (se a peça pode ser movida), fazer busca pra cada um 
@@ -184,11 +173,7 @@ bool haJogadasPosiveis(){
 *
 */
 
-void iteraBacktracking(int qtdPecas, int c, int x0, int y0, char direcao){
-
-    if(qtdPecas == 1 && tabuleiro[CENTRO][CENTRO] == 1){
-        return;
-    }
+bool iteraBacktracking(int qtdPecas, int x0, int y0, char direcao){
 
     int meio = TAMANHO / 2;
 
@@ -199,15 +184,17 @@ void iteraBacktracking(int qtdPecas, int c, int x0, int y0, char direcao){
 
         movimenta(x0, y0, xf, yf);
 
-        if(qtdPecas > 1 && haJogadasPosiveis()){
-            jogaRestaUm(qtdPecas - 1, c + 1);
+        if(jogaRestaUm(qtdPecas - 1)){
+            return true;
         }
         
         //printf("Limpando movimento para a esquerda");
         limpaMovimento(jogadas[cont - 1]); /*Retira o movimento do historico*/
         cont--;
         desfazMovimento(x0, y0, xf, yf); /*Retorna o tabuleiro para a posicao anterior ao movimento*/
-    }    
+    }
+
+    return false;
 }
 
 int defineXf(int x, char direcao){
@@ -239,25 +226,33 @@ int defineYf(int y, char direcao){
 }
 
 /*Metodo com backtracking do resta um*/
-void jogaRestaUm(int qtdPecas, int c){
+bool jogaRestaUm(int qtdPecas){
     if(qtdPecas == 1 && tabuleiro[CENTRO][CENTRO] == 1){
-        return;
+        return true;
     }
+
+    int xf, yf;
 
     for(int x = 0; x < TAMANHO; x++){
         for(int y = 0; y < TAMANHO; y++){
-            if(posicaoValida(x, y) && qtdPecas > 1){
-                /*Testa com movimento para cima*/
-                iteraBacktracking(qtdPecas, c, x, y, 'c');
-                /*Testa com movimento para baixo*/
-                iteraBacktracking(qtdPecas, c, x, y, 'b');
-                /*Testa com movimento para esquerda*/
-                iteraBacktracking(qtdPecas, c, x, y, 'e');
-                /*Testa com movimento para cima*/
-                iteraBacktracking(qtdPecas, c, x, y, 'd');
+            if(tabuleiro[x][y] == 1){
+                if(iteraBacktracking(qtdPecas, x, y, 'b')){ // Testa movimento para baixo
+                    return true;
+                }
+                if(iteraBacktracking(qtdPecas, x, y, 'c')){ // Testa movimento para cima
+                    return true;
+                }
+                if(iteraBacktracking(qtdPecas, x, y, 'd')){ // Testa movimento para a direita
+                    return true;
+                }
+                if(iteraBacktracking(qtdPecas, x, y, 'e')){ // Testa movimento para a esquerda
+                    return true;
+                }
             }
         }
     }
+
+    return false;
 }
 
 void limpaMovimento(Movimento *mov){
@@ -281,7 +276,7 @@ void imprimeSaida(char *nomeArquivo){
         return;
     }
 
-    for(int i = 0; i < sizeof(jogadas); i++){
+    for(int i = 0; i < cont; i++){
 
         fprintf(saida, "#########\n");
         for(int x = 0; x < TAMANHO; x++){
@@ -297,9 +292,15 @@ void imprimeSaida(char *nomeArquivo){
             }
             fprintf(saida, "#\n");
         }
-        fprintf(saida, "#########\n");
+        fprintf(saida, "#########\n\n");
 
-        movimenta(jogadas[i]->x0, jogadas[i]->y0, jogadas[i]->xf, jogadas[i]->yf);
+        tabuleiro2[jogadas[i]->x0][jogadas[i]->y0] = 0;
+
+        int xmedia = (jogadas[i]->x0 + jogadas[i]->xf) / 2;
+        int ymedia = (jogadas[i]->y0 + jogadas[i]->yf) / 2;
+
+        tabuleiro2[xmedia][ymedia] = 0;
+        tabuleiro2[jogadas[i]->y0][jogadas[i]->yf] = 1;
     }
     
     fclose(saida);

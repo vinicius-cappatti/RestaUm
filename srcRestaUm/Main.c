@@ -39,7 +39,7 @@ int main(){
 
     jogadas = (Movimento**) malloc((NUM_INI_PECAS - 1) * sizeof(Movimento*));
 
-    jogaRestaUm(NUM_INI_PECAS, 0);
+    jogaRestaUm(NUM_INI_PECAS);
     
     if(jogadas == NULL){
         printf("Erro na criação das jogadas.\n");
@@ -48,10 +48,7 @@ int main(){
 
     printf("Resultado encontrado!\n");
 
-    int tam = sizeof(jogadas) / sizeof(Movimento*);
-    for(int i = 0; i < tam; i++){
-        printMov(jogadas[i]);
-    }
+    printHistorico();
 
     /*Imprimir as jogadas no arquivo de saida*/
     
