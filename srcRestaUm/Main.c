@@ -39,7 +39,7 @@ int main(){
 
     jogadas = (Movimento**) malloc((NUM_INI_PECAS - 1) * sizeof(Movimento*));
 
-    jogaRestaUm(NUM_INI_PECAS);
+    jogaRestaUm(NUM_INI_PECAS, 0);
     
     if(jogadas == NULL){
         printf("Erro na criação das jogadas.\n");

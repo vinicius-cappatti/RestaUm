@@ -59,15 +59,16 @@ int** copiaTabuleiro();
 void removeNovaLinha(char *linha);
 bool posicaoValida(int x, int y);
 bool movimentoValido(int x0, int y0, int xf, int yf);
-Movimento movimenta(int x0, int y0, int xf, int yf);
+void movimenta(int x0, int y0, int xf, int yf);
 void desfazMovimento(int x0, int y0, int xf, int yf);
 bool haJogadasPosiveis();
-void iteraBacktracking(int qtdPecas, int x0, int y0, char direcao);
+void iteraBacktracking(int qtdPecas, int c, int x0, int y0, char direcao);
 int defineXf(int x, char direcao);
 int defineYf(int y, char direcao);
-void jogaRestaUm(int qtdPecas);
+void jogaRestaUm(int qtdPecas, int c);
 void limpaMovimento(Movimento *mov);
 void printMov(Movimento *mov);
 void imprimeSaida(char *nomeArquivo);
+void printHistorico();
 
 #endif

@@ -129,7 +129,7 @@ bool movimentoValido(int x0, int y0, int xf, int yf){
 	return true;
 }
 
-Movimento movimenta(int x0, int y0, int xf, int yf){
+void movimenta(int x0, int y0, int xf, int yf){
     tabuleiro[x0][y0] = 0; /*Posicao inicial do movimento*/
     tabuleiro[xf][yf] = 1; /*Posicao final do movimento*/
 
@@ -146,7 +146,9 @@ Movimento movimenta(int x0, int y0, int xf, int yf){
     mov.y0 = y0;
     mov.yf = yf;
 
-    return mov;
+    jogadas[cont] = (Movimento*) malloc(sizeof(Movimento));
+    *jogadas[cont] = mov;
+    cont++;
 }
 
 void desfazMovimento(int x0, int y0, int xf, int yf){
@@ -182,7 +184,7 @@ bool haJogadasPosiveis(){
 *
 */
 
-void iteraBacktracking(int qtdPecas, int x0, int y0, char direcao){
+void iteraBacktracking(int qtdPecas, int c, int x0, int y0, char direcao){
 
     if(qtdPecas == 1 && tabuleiro[CENTRO][CENTRO] == 1){
         return;
@@ -194,14 +196,11 @@ void iteraBacktracking(int qtdPecas, int x0, int y0, char direcao){
     int yf = defineYf(y0, direcao);
 
     if(movimentoValido(x0, y0, xf, yf)){
-        Movimento mov = movimenta(x0, y0, xf, yf);
 
-        jogadas[cont] = (Movimento*) malloc(sizeof(Movimento));
-        *jogadas[cont] = mov;
-        cont++;
+        movimenta(x0, y0, xf, yf);
 
         if(qtdPecas > 1 && haJogadasPosiveis()){
-            jogaRestaUm(qtdPecas - 1);
+            jogaRestaUm(qtdPecas - 1, c + 1);
         }
         
         //printf("Limpando movimento para a esquerda");
@@ -240,7 +239,7 @@ int defineYf(int y, char direcao){
 }
 
 /*Metodo com backtracking do resta um*/
-void jogaRestaUm(int qtdPecas){
+void jogaRestaUm(int qtdPecas, int c){
     if(qtdPecas == 1 && tabuleiro[CENTRO][CENTRO] == 1){
         return;
     }
@@ -249,13 +248,13 @@ void jogaRestaUm(int qtdPecas){
         for(int y = 0; y < TAMANHO; y++){
             if(posicaoValida(x, y) && qtdPecas > 1){
                 /*Testa com movimento para cima*/
-                iteraBacktracking(qtdPecas, x, y, 'c');
+                iteraBacktracking(qtdPecas, c, x, y, 'c');
                 /*Testa com movimento para baixo*/
-                iteraBacktracking(qtdPecas, x, y, 'b');
+                iteraBacktracking(qtdPecas, c, x, y, 'b');
                 /*Testa com movimento para esquerda*/
-                iteraBacktracking(qtdPecas, x, y, 'e');
+                iteraBacktracking(qtdPecas, c, x, y, 'e');
                 /*Testa com movimento para cima*/
-                iteraBacktracking(qtdPecas, x, y, 'd');
+                iteraBacktracking(qtdPecas, c, x, y, 'd');
             }
         }
     }
@@ -304,4 +303,10 @@ void imprimeSaida(char *nomeArquivo){
     }
     
     fclose(saida);
+}
+
+void printHistorico(){
+    for(int i = 0; i < cont; i++){
+        printMov(jogadas[i]);
+    }
 }
