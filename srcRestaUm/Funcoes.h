@@ -5,9 +5,16 @@
 *********************************************************************** */
 
 #include <stdbool.h>
+#include <stdlib.h>
 
 #ifndef FUNCOES_H
 #define FUNCOES_H
+
+/*Constantes do programa*/
+
+#define TAMANHO 7
+#define CENTRO 3
+#define NUM_INI_PECAS 32
 
 /* ******************************************************************
 * Struct Movimento representa um movimento com as caracteristicas:
@@ -24,30 +31,43 @@ typedef struct movimento{
     int yf;
 } Movimento;
 
-/*Struct Historico eh uma fila de Movimentos*/
-typedef struct historico{
-    int tam;
-    Movimento **listMovs;
-    int inicio;
-    int fim;
-} Historico;
+/*Variaveis globais*/
+
+/* ******************************************
+* Matriz que contem um tabuleiro de Resta um
+* onde:
+* -1 representa uma posicao onde nao ha casa
+* 0 representa uma casa vazia
+* 1 representa uma casa ocupada
+****************************************** */
+extern int **tabuleiro;
+
+//Copia da matriz tabuleiro que eh usada na saida do programa
+extern int **tabuleiro2;
+
+//Historico de jogadas
+extern Movimento** jogadas;
+
+//Contador utilizado no backtracking
+static int cont = 0;
 
 /*Funcoes do jogo Resta Um*/
 
-void lerTabuleiro(int **tabuleiro, int numLinhas, int numColunas, char *nomeArquivo);
-int** copiaTabuleiro(int **tabuleiro, int linhas, int colunas);
+int** inicializaTabuleiro();
+void lerTabuleiro(char *nomeArquivo);
+int** copiaTabuleiro();
 void removeNovaLinha(char *linha);
-bool posicaoValida(int **tabuleiro, int linhas, int colunas, int x, int y);
-bool finalizou(int **tabuleiro, int **gabarito, int linhas, int colunas);
-bool movimentoValido(int **tabuleiro, int tamanho, int x0, int y0, int xf, int yf);
-Movimento movimenta(int **tabuleiro, int x0, int y0, int xf, int yf);
-void desfazMovimento(int **tabuleiro, int x0, int y0, int xf, int yf);
-bool haJogadasPosiveis(int **tabuleiro, int linhas, int colunas);
-Movimento** jogaRestaUm(int **tabuleiro, int linhas, int colunas, int qtdPecas, int centroLin, int centroCol, Movimento** historico, int cont);
-
-/*Funcoes da struct Movimento*/
-
+bool posicaoValida(int x, int y);
+bool movimentoValido(int x0, int y0, int xf, int yf);
+Movimento movimenta(int x0, int y0, int xf, int yf);
+void desfazMovimento(int x0, int y0, int xf, int yf);
+bool haJogadasPosiveis();
+void iteraBacktracking(int qtdPecas, int x0, int y0, char direcao);
+int defineXf(int x, char direcao);
+int defineYf(int y, char direcao);
+void jogaRestaUm(int qtdPecas);
 void limpaMovimento(Movimento *mov);
 void printMov(Movimento *mov);
+void imprimeSaida(char *nomeArquivo);
 
 #endif
