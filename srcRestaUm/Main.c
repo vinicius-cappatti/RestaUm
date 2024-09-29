@@ -18,7 +18,7 @@ int **tabuleiro;
 int **tabuleiro2;
 Movimento **jogadas;
 
-int main(){
+int main(int argc, char **argv){
     setlocale(LC_ALL, "pt_BR.UTF-8");
 
     tabuleiro = inicializaTabuleiro();
@@ -27,7 +27,12 @@ int main(){
     }
 
     // Chama a função para ler o tabuleiro do arquivo e armazená-lo na matriz
-    lerTabuleiro("entrada.txt");
+    if (argc > 1) {
+        lerTabuleiro(argv[1]);
+    }
+    else {
+        lerTabuleiro("entrada.txt");
+    }
 
     tabuleiro2 = copiaTabuleiro(tabuleiro, TAMANHO);
 

@@ -19,6 +19,25 @@ O objetivo do jogo é, após 31 movimentos válidos, obter apenas o pino central
 
 ![Posiçao final esperada](imagensREADME/image-2.png)
 
+## Instruções de Uso para Compilação
+
+**Compilar:** 
+```bash
+gcc -o restaUm.exe srcRestaUm\Main.c srcRestaUm\Funcoes.c 
+```
+
+**Execução:**
+
+A execução pode ser feita de duas maneiras:
+- passando o caminho do arquivo de execução por terminal
+```bash
+.\restaUm.exe .\srcRestaUm\entrada.txt
+```
+ - ou executar se o arquivo de entrada estiver na mesma pasta
+ ```bash
+.\restaUm.exe
+```
+
 ## Link para explicação
 
 ## Referências bibliográficas
