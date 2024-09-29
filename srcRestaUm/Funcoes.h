@@ -57,7 +57,8 @@ void lerTabuleiro(char *nomeArquivo);
 int** copiaTabuleiro();
 void removeNovaLinha(char *linha);
 bool movimentoValido(int x0, int y0, int xf, int yf);
-void movimenta(int x0, int y0, int xf, int yf);
+Movimento movimenta(int x0, int y0, int xf, int yf);
+void salvaMovimento(Movimento mov);
 void desfazMovimento(int x0, int y0, int xf, int yf);
 bool iteraBacktracking(int qtdPecas, int x0, int y0, char direcao);
 int defineXf(int x, char direcao);
@@ -65,8 +66,8 @@ int defineYf(int y, char direcao);
 bool jogaRestaUm(int qtdPecas);
 void limpaMovimento(Movimento *mov);
 void printMov(Movimento *mov);
+bool movimentaTab2(int i);
 void imprimeSaida(char *nomeArquivo);
-void apenasMovimenta(int x0, int y0, int xf, int yf);
 void printHistorico();
 
 #endif

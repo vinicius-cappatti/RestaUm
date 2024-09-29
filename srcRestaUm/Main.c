@@ -46,8 +46,6 @@ int main(int argc, char **argv){
     
     printf("*** JOGO DE RESTA UM ***\nA execução pode demorar alguns minutos.\n");
 
-    
-
     jogaRestaUm(NUM_INI_PECAS); 
     
     if(jogadas == NULL){
