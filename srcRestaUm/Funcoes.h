@@ -15,6 +15,7 @@
 #define TAMANHO 7
 #define CENTRO 3
 #define NUM_INI_PECAS 32
+#define MAX_LINHA 100
 
 /* ******************************************************************
 * Struct Movimento representa um movimento com as caracteristicas:
@@ -57,7 +58,7 @@ void lerTabuleiro(char *nomeArquivo);
 int** copiaTabuleiro();
 void removeNovaLinha(char *linha);
 bool movimentoValido(int x0, int y0, int xf, int yf);
-Movimento movimenta(int x0, int y0, int xf, int yf);
+Movimento movimenta(int **matriz, int x0, int y0, int xf, int yf);
 void salvaMovimento(Movimento mov);
 void desfazMovimento(int x0, int y0, int xf, int yf);
 bool iteraBacktracking(int qtdPecas, int x0, int y0, char direcao);
@@ -66,8 +67,7 @@ int defineYf(int y, char direcao);
 bool jogaRestaUm(int qtdPecas);
 void limpaMovimento(Movimento *mov);
 void printMov(Movimento *mov);
-bool movimentaTab2(int i);
 void imprimeSaida(char *nomeArquivo);
-void printHistorico();
+void printJogadas();
 
 #endif

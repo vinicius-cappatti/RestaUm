@@ -77,7 +77,7 @@ void lerTabuleiro(char *nomeArquivo) {
         return;
     }
 
-    char linha[200000];  // Ajusta para possível '\n' e '\0'
+    char linha[MAX_LINHA];  // Ajusta para possível '\n' e '\0'
 
     // Percorre o arquivo, lendo linha por linha
     for (int i = 0; i < TAMANHO + 2; i++) {  // TAMANHO + 2 devido à margem (#)
@@ -90,12 +90,12 @@ void lerTabuleiro(char *nomeArquivo) {
         }
 
         // Processa apenas as linhas internas (sem a margem)
-        for (int j = 1; j <= TAMANHO; j++) {  // Começa em 1 e vai até numColunas
+        for (int j = 1; j <= TAMANHO; j++) {  // Começa em 1 e vai até TAMANHO
             char caractere = linha[j];  // Pega o caractere correspondente
 
             // Converte os caracteres para os valores da matriz
             if (caractere == '#') {
-                tabuleiro[i - 1][j - 1] = -1;  // Margem
+                tabuleiro[i - 1][j - 1] = -1;  // Margem ou casa invalida
             } else if (caractere == 'o') {
                 tabuleiro[i - 1][j - 1] = 1;   // Espaço ocupado
             } else if (caractere == ' ') {
@@ -127,15 +127,15 @@ bool movimentoValido(int x0, int y0, int xf, int yf){
 /*Funcao que recebe uma coordenada inicial (x0, y0) e final (xf, yf) e altera os valores da matriz tabuleiro para 
 simular um movimento de resta um, de forma que a peca sai da posicao inicial para a final 'comendo' a peca
 que estava na casa do meio e retorna qual o movimento resultante*/
-Movimento movimenta(int x0, int y0, int xf, int yf) {
-    tabuleiro[x0][y0] = 0; /*Posicao inicial do movimento*/
-    tabuleiro[xf][yf] = 1; /*Posicao final do movimento*/
+Movimento movimenta(int **matriz, int x0, int y0, int xf, int yf) {
+    matriz[x0][y0] = 0; /*Posicao inicial do movimento*/
+    matriz[xf][yf] = 1; /*Posicao final do movimento*/
 
     int xmedia = (x0 + xf) / 2;
     int ymedia = (y0 + yf) / 2;
 
     /*Representa a casa onde esta a peca que sai do tabuleiro*/
-    tabuleiro[xmedia][ymedia] = 0;
+    matriz[xmedia][ymedia] = 0;
 
     Movimento mov;
 
@@ -166,34 +166,6 @@ void desfazMovimento(int x0, int y0, int xf, int yf){
 
     /*Insere de volta no tabuleiro a peca que havia sido retirada*/
     tabuleiro[xmedia][ymedia] = 1;
-}
-
-/*Funcao que itera o backtracking da funcao 'jogaRestaUm'.*/
-bool iteraBacktracking(int qtdPecas, int x0, int y0, char direcao){
-
-    int meio = TAMANHO / 2;
-
-    int xf = defineXf(x0, direcao);
-    int yf = defineYf(y0, direcao);
-
-    /*Somente itera o backtracking se o movimento for valido*/
-    if(movimentoValido(x0, y0, xf, yf)){
-
-        Movimento mov = movimenta(x0, y0, xf, yf); // Altera o tabuleiro e retorna o movimento feito
-
-        // Salva o ultimo movimento em 'jogadas'
-        salvaMovimento(mov);
-
-        if(jogaRestaUm(qtdPecas - 1)){ // Chama novamente o jogaRestaUm com a quantidade de pecas atualizada
-            return true; // Retorna true se a proxima iteracao chegar ao caso base
-        }
-        
-        limpaMovimento(jogadas[cont - 1]); /*Retira o movimento de 'jogadas'*/
-        cont--;
-        desfazMovimento(x0, y0, xf, yf); /*Retorna o tabuleiro para a posicao anterior ao movimento*/
-    }
-
-    return false; // Se o movimento nao for valido ou se nao conseguir chegar a um caso base, retorna false
 }
 
 /*Funcao que retorna qual a linha final de um movimento para determinada direcao*/
@@ -258,6 +230,34 @@ bool jogaRestaUm(int qtdPecas){
     return false;
 }
 
+/*Funcao que itera o backtracking da funcao 'jogaRestaUm'.*/
+bool iteraBacktracking(int qtdPecas, int x0, int y0, char direcao){
+
+    int meio = TAMANHO / 2;
+
+    int xf = defineXf(x0, direcao);
+    int yf = defineYf(y0, direcao);
+
+    /*Somente itera o backtracking se o movimento for valido*/
+    if(movimentoValido(x0, y0, xf, yf)){
+
+        Movimento mov = movimenta(tabuleiro, x0, y0, xf, yf); // Altera o tabuleiro e retorna o movimento feito
+
+        // Salva o ultimo movimento em 'jogadas'
+        salvaMovimento(mov);
+
+        if(jogaRestaUm(qtdPecas - 1)){ // Chama novamente o jogaRestaUm com a quantidade de pecas atualizada
+            return true; // Retorna true se a proxima iteracao chegar ao caso base
+        }
+        
+        limpaMovimento(jogadas[cont - 1]); /*Retira o movimento de 'jogadas'*/
+        cont--;
+        desfazMovimento(x0, y0, xf, yf); /*Retorna o tabuleiro para a posicao anterior ao movimento*/
+    }
+
+    return false; // Se o movimento nao for valido ou se nao conseguir chegar a um caso base, retorna false
+}
+
 // Funcao que exclui uma instancia da struct Movimento da memoria
 void limpaMovimento(Movimento *mov){
     mov->x0 = 0;
@@ -269,25 +269,6 @@ void limpaMovimento(Movimento *mov){
 // Funcao que imprime as coordenadas iniciais e finais de um movimento
 void printMov(Movimento *mov){
     printf("(%d, %d) -> (%d, %d)\n", mov->x0, mov->y0, mov->xf, mov->yf);
-}
-
-/*A funcao recebe um indice i de 'jogadas' e altera o tabuleiro2 (saida do programa) 
-conforme o Movimento contido em jogadas[i]*/
-bool movimentaTab2(int i){
-
-    if(i < 0 || i > cont){
-        return false;
-    }
-
-    tabuleiro2[jogadas[i]->x0][jogadas[i]->y0] = 0;
-
-    int xmedia = (jogadas[i]->x0 + jogadas[i]->xf) / 2;
-    int ymedia = (jogadas[i]->y0 + jogadas[i]->yf) / 2;
-
-    tabuleiro2[xmedia][ymedia] = 0;
-    tabuleiro2[jogadas[i]->xf][jogadas[i]->yf] = 1;
-
-    return true;
 }
 
 // Funcao que preenche o arquivo de saida com todos os estados do tabuleiro durante o decorrer do jogo
@@ -322,14 +303,14 @@ void imprimeSaida(char *nomeArquivo){
         if (i == cont) break; // Evita o erro de out of bounds, ja que percorrendo 'jogadas' estamos a i+1 na frente da escrita do arquivo
 
         // Agora com o tabuleiro reiniciado fazemos os movimentos nele e vamos escrevendo no arquivo de saida 
-        movimentaTab2(i);
+        movimenta(tabuleiro2, jogadas[i]->x0, jogadas[i]->y0, jogadas[i]->xf, jogadas[i]->yf);
     }
     
     fclose(saida);
 }
 
 // Funcao que imprime todas as jogadas necessarias para se chegar na solucao do jogo
-void printHistorico(){
+void printJogadas(){
     for(int i = 0; i < cont; i++){
         printMov(jogadas[i]);
     }

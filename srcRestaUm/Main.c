@@ -44,7 +44,7 @@ int main(int argc, char **argv){
 
     /*Chamada do backtracking*/
     
-    printf("*** JOGO DE RESTA UM ***\nA execução pode demorar alguns minutos.\n");
+    printf("*** JOGO DE RESTA UM ***\nA execução pode demorar um pouco.\n");
 
     jogaRestaUm(NUM_INI_PECAS); 
     
@@ -55,7 +55,7 @@ int main(int argc, char **argv){
 
     printf("Resultado encontrado!\nPassos para se resolver o resta um:\n");
 
-    printHistorico();
+    printJogadas();
 
     /*Imprimir as jogadas no arquivo de saida*/
     
@@ -64,6 +64,7 @@ int main(int argc, char **argv){
     printf("Resultado salvo em restaum.out\n");
 
     // Libera a memória alocada dinamicamente antes de finalizar o programa
+    for(int i = 0; i < cont; i++){ free(jogadas[i]); }
     free(jogadas);
 
     for (int i = 0; i < TAMANHO; i++){ free(tabuleiro[i]); }
