@@ -22,7 +22,6 @@
 * y0: coluna de partida
 * xf: linha final
 * yf: coluna final
-* direcao: a direcao do movimento (cima, baixo, esquerda ou direita)
 ****************************************************************** */
 typedef struct movimento{
     int x0;
@@ -33,19 +32,19 @@ typedef struct movimento{
 
 /*Variaveis globais*/
 
-/* ******************************************
+/* ****************************************************
 * Matriz que contem um tabuleiro de Resta um
 * onde:
-* -1 representa uma posicao onde nao ha casa
-* 0 representa uma casa vazia
-* 1 representa uma casa ocupada
-****************************************** */
+* -1 representa uma posicao onde nao ha casa ('#')
+* 0 representa uma casa vazia (' ')
+* 1 representa uma casa ocupada ('o')
+**************************************************** */
 extern int **tabuleiro;
 
 //Copia da matriz tabuleiro que eh usada na saida do programa
 extern int **tabuleiro2;
 
-//Historico de jogadas
+//Historico de jogadas feitas para se resolver o jogo de Resta Um
 extern Movimento** jogadas;
 
 //Contador utilizado no backtracking

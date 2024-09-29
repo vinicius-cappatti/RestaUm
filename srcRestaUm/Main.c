@@ -1,7 +1,11 @@
 /* ***********************************************************************
  * PARTICIPANTES:
- *    Thomaz de Souza Scopel (RA: 10417183)
- *    Vinícius Sanches Cappatti (RA: 10418266)
+ *  Thomaz de Souza Scopel (RA: 10417183)
+ *  Vinícius Sanches Cappatti (RA: 10418266)
+ * OBJETIVO:
+ *  Criar um programa utilizando Backtracking que solucione um jogo 
+ *  de Resta Um de forma que, ao final, a peca restante esteja sempre
+ *  na posicao central do tabuleiro
  *********************************************************************** */
 
 
@@ -21,25 +25,24 @@ Movimento **jogadas;
 int main(){
     setlocale(LC_ALL, "pt_BR.UTF-8");
 
-    tabuleiro = inicializaTabuleiro();
+    tabuleiro = inicializaTabuleiro(); // Alocacao da memoria dinamica do tabuleiro
     if(tabuleiro == NULL){
         return 1;
     }
 
-    // Chama a função para ler o tabuleiro do arquivo e armazená-lo na matriz
-    lerTabuleiro("entrada.txt");
+    lerTabuleiro("entrada.txt"); // Leitura do conteudo do arquivo salva na matriz tabuleiro
 
-    tabuleiro2 = copiaTabuleiro(tabuleiro, TAMANHO);
+    tabuleiro2 = copiaTabuleiro(tabuleiro, TAMANHO); // tabuleiro2 sera utilizado posteriormente para imprimir a saida
 
-    jogadas = (Movimento**) malloc(NUM_INI_PECAS * sizeof(Movimento*));
+    jogadas = (Movimento**) malloc(NUM_INI_PECAS * sizeof(Movimento*)); // Lista contendo os movimentos feitos para resolver o jogo
 
     /*Chamada do backtracking*/
     
     printf("*** JOGO DE RESTA UM ***\nA execução pode demorar alguns minutos.\n");
 
-    jogadas = (Movimento**) malloc((NUM_INI_PECAS - 1) * sizeof(Movimento*));
+    
 
-    jogaRestaUm(NUM_INI_PECAS);
+    jogaRestaUm(NUM_INI_PECAS); 
     
     if(jogadas == NULL){
         printf("Erro na criação das jogadas.\n");

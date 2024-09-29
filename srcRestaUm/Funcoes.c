@@ -104,7 +104,7 @@ void lerTabuleiro(char *nomeArquivo) {
     fclose(arquivo);  // Fecha o arquivo
 }
 
-/*Metodo retorna se a peca da posicao tabuleiro[x0][y0] pode ser movida conforme a direcao*/
+/*Metodo retorna se a peca da posicao tabuleiro[x0][y0] pode ser movida para tabuleiro[xf][yf]*/
 bool movimentoValido(int x0, int y0, int xf, int yf){
 	
 	if(tabuleiro[x0][y0] != 1){ return false; }
@@ -121,6 +121,9 @@ bool movimentoValido(int x0, int y0, int xf, int yf){
 	return true;
 }
 
+/*Funcao que recebe uma coordenada inicial (x0, y0) e final (xf, yf) e altera os valores da matriz tabuleiro para 
+simular um movimento de resta um, de forma que a peca sai da posicao inicial para a final 'comendo' a peca
+que estava na casa do meio*/
 void movimenta(int x0, int y0, int xf, int yf){
     tabuleiro[x0][y0] = 0; /*Posicao inicial do movimento*/
     tabuleiro[xf][yf] = 1; /*Posicao final do movimento*/
@@ -143,17 +146,9 @@ void movimenta(int x0, int y0, int xf, int yf){
     cont++;
 }
 
-void movimentaTab2(int x0, int y0, int xf, int yf){
-    tabuleiro[x0][y0] = 0; /*Posicao inicial do movimento*/
-    tabuleiro[xf][yf] = 1; /*Posicao final do movimento*/
-
-    int xmedia = (x0 + xf) / 2;
-    int ymedia = (y0 + yf) / 2;
-
-    /*Representa a casa onde esta a peca que sai do tabuleiro*/
-    tabuleiro[xmedia][ymedia] = 0; 
-}
-
+/*Funcao que recebe uma coordenada inicial (x0, y0) e final (xf, yf) e altera os valores da matriz tabuleiro para 
+simular a exclusao de um movimento de resta um, de forma que a posicao inicial e do meio recebem uma peca cada
+enquanto a final eh esvaziada*/
 void desfazMovimento(int x0, int y0, int xf, int yf){
     tabuleiro[x0][y0] = 1; /*Retorna a peca para a posicao inicial*/
     tabuleiro[xf][yf] = 0; /*Esvazia a casa da posicao final*/
@@ -165,13 +160,6 @@ void desfazMovimento(int x0, int y0, int xf, int yf){
     tabuleiro[xmedia][ymedia] = 1;
 }
 
-/* Variaveis globais (tabuleiro, TAMANHO da matriz, historico) 
-*  Fluxograma: avaliar entrada/saida, transformar a entrada no padrao do programa como matriz,
-*              avaliar movimentos validos (se a peça pode ser movida), fazer busca pra cada um 
-*              dos movientos validos, ir gravando no historico como stack os movimentos
-* 
-*
-*/
 
 bool iteraBacktracking(int qtdPecas, int x0, int y0, char direcao){
 
