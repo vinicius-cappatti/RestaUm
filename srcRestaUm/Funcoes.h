@@ -66,6 +66,7 @@ bool jogaRestaUm(int qtdPecas);
 void limpaMovimento(Movimento *mov);
 void printMov(Movimento *mov);
 void imprimeSaida(char *nomeArquivo);
+void apenasMovimenta(int x0, int y0, int xf, int yf);
 void printHistorico();
 
 #endif

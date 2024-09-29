@@ -149,6 +149,17 @@ void movimenta(int x0, int y0, int xf, int yf){
 /*Funcao que recebe uma coordenada inicial (x0, y0) e final (xf, yf) e altera os valores da matriz tabuleiro para 
 simular a exclusao de um movimento de resta um, de forma que a posicao inicial e do meio recebem uma peca cada
 enquanto a final eh esvaziada*/
+void apenasMovimenta(int x0, int y0, int xf, int yf) {
+    tabuleiro[x0][y0] = 0; /*Posicao inicial do movimento*/
+    tabuleiro[xf][yf] = 1; /*Posicao final do movimento*/
+
+    int xmedia = (x0 + xf) / 2;
+    int ymedia = (y0 + yf) / 2;
+
+    /*Representa a casa onde esta a peca que sai do tabuleiro*/
+    tabuleiro[xmedia][ymedia] = 0; 
+}
+
 void desfazMovimento(int x0, int y0, int xf, int yf){
     tabuleiro[x0][y0] = 1; /*Retorna a peca para a posicao inicial*/
     tabuleiro[xf][yf] = 0; /*Esvazia a casa da posicao final*/
@@ -192,6 +203,7 @@ int defineXf(int x, char direcao){
         case 'b':
             return x + 2;
         case 'd':
+            return x;
         case 'e':
             return x;
         default:
@@ -202,6 +214,7 @@ int defineXf(int x, char direcao){
 int defineYf(int y, char direcao){
     switch (direcao){
         case 'c':
+            return y;            
         case 'b':
             return y;
         case 'd':
@@ -264,7 +277,7 @@ void imprimeSaida(char *nomeArquivo){
         return;
     }
 
-    for(int i = 0; i < cont; i++){
+    for(int i = 0; i <= cont; i++){
 
         fprintf(saida, "#########\n");
         for(int x = 0; x < TAMANHO; x++){
@@ -282,6 +295,9 @@ void imprimeSaida(char *nomeArquivo){
         }
         fprintf(saida, "#########\n\n");
 
+        if (i == cont) break; // Evita o erro de out of bounds, ja que percorrendo 'jogadas' estamos a i+1 na frente da escrita do arquivo
+
+        // Agora com o tabuleiro reiniciado fazemos os movimentos nele e vamos escrevendo no arquivo de saida 
         tabuleiro2[jogadas[i]->x0][jogadas[i]->y0] = 0;
 
         int xmedia = (jogadas[i]->x0 + jogadas[i]->xf) / 2;
