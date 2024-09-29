@@ -124,15 +124,15 @@ bool movimentoValido(int x0, int y0, int xf, int yf){
 /*Funcao que recebe uma coordenada inicial (x0, y0) e final (xf, yf) e altera os valores da matriz tabuleiro para 
 simular um movimento de resta um, de forma que a peca sai da posicao inicial para a final 'comendo' a peca
 que estava na casa do meio e retorna qual o movimento resultante*/
-Movimento movimenta(int x0, int y0, int xf, int yf) {
-    tabuleiro[x0][y0] = 0; /*Posicao inicial do movimento*/
-    tabuleiro[xf][yf] = 1; /*Posicao final do movimento*/
+Movimento movimenta(int **matriz, int x0, int y0, int xf, int yf) {
+    matriz[x0][y0] = 0; /*Posicao inicial do movimento*/
+    matriz[xf][yf] = 1; /*Posicao final do movimento*/
 
     int xmedia = (x0 + xf) / 2;
     int ymedia = (y0 + yf) / 2;
 
     /*Representa a casa onde esta a peca que sai do tabuleiro*/
-    tabuleiro[xmedia][ymedia] = 0;
+    matriz[xmedia][ymedia] = 0;
 
     Movimento mov;
 
@@ -176,7 +176,7 @@ bool iteraBacktracking(int qtdPecas, int x0, int y0, char direcao){
     /*Somente itera o backtracking se o movimento for valido*/
     if(movimentoValido(x0, y0, xf, yf)){
 
-        Movimento mov = movimenta(x0, y0, xf, yf); // Altera o tabuleiro e retorna o movimento feito
+        Movimento mov = movimenta(tabuleiro, x0, y0, xf, yf); // Altera o tabuleiro e retorna o movimento feito
 
         // Salva o ultimo movimento em 'jogadas'
         salvaMovimento(mov);
@@ -268,25 +268,6 @@ void printMov(Movimento *mov){
     printf("(%d, %d) -> (%d, %d)\n", mov->x0, mov->y0, mov->xf, mov->yf);
 }
 
-/*A funcao recebe um indice i de 'jogadas' e altera o tabuleiro2 (saida do programa) 
-conforme o Movimento contido em jogadas[i]*/
-bool movimentaTab2(int i){
-
-    if(i < 0 || i > cont){
-        return false;
-    }
-
-    tabuleiro2[jogadas[i]->x0][jogadas[i]->y0] = 0;
-
-    int xmedia = (jogadas[i]->x0 + jogadas[i]->xf) / 2;
-    int ymedia = (jogadas[i]->y0 + jogadas[i]->yf) / 2;
-
-    tabuleiro2[xmedia][ymedia] = 0;
-    tabuleiro2[jogadas[i]->xf][jogadas[i]->yf] = 1;
-
-    return true;
-}
-
 // Funcao que preenche o arquivo de saida com todos os estados do tabuleiro durante o decorrer do jogo
 void imprimeSaida(char *nomeArquivo){
     FILE *saida;
@@ -319,7 +300,7 @@ void imprimeSaida(char *nomeArquivo){
         if (i == cont) break; // Evita o erro de out of bounds, ja que percorrendo 'jogadas' estamos a i+1 na frente da escrita do arquivo
 
         // Agora com o tabuleiro reiniciado fazemos os movimentos nele e vamos escrevendo no arquivo de saida 
-        movimentaTab2(i);
+        movimenta(tabuleiro2, jogadas[i]->x0, jogadas[i]->y0, jogadas[i]->xf, jogadas[i]->yf);
     }
     
     fclose(saida);

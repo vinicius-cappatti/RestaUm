@@ -57,7 +57,7 @@ void lerTabuleiro(char *nomeArquivo);
 int** copiaTabuleiro();
 void removeNovaLinha(char *linha);
 bool movimentoValido(int x0, int y0, int xf, int yf);
-Movimento movimenta(int x0, int y0, int xf, int yf);
+Movimento movimenta(int **matriz, int x0, int y0, int xf, int yf);
 void salvaMovimento(Movimento mov);
 void desfazMovimento(int x0, int y0, int xf, int yf);
 bool iteraBacktracking(int qtdPecas, int x0, int y0, char direcao);
