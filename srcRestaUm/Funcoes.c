@@ -165,34 +165,6 @@ void desfazMovimento(int x0, int y0, int xf, int yf){
     tabuleiro[xmedia][ymedia] = 1;
 }
 
-/*Funcao que itera o backtracking da funcao 'jogaRestaUm'.*/
-bool iteraBacktracking(int qtdPecas, int x0, int y0, char direcao){
-
-    int meio = TAMANHO / 2;
-
-    int xf = defineXf(x0, direcao);
-    int yf = defineYf(y0, direcao);
-
-    /*Somente itera o backtracking se o movimento for valido*/
-    if(movimentoValido(x0, y0, xf, yf)){
-
-        Movimento mov = movimenta(tabuleiro, x0, y0, xf, yf); // Altera o tabuleiro e retorna o movimento feito
-
-        // Salva o ultimo movimento em 'jogadas'
-        salvaMovimento(mov);
-
-        if(jogaRestaUm(qtdPecas - 1)){ // Chama novamente o jogaRestaUm com a quantidade de pecas atualizada
-            return true; // Retorna true se a proxima iteracao chegar ao caso base
-        }
-        
-        limpaMovimento(jogadas[cont - 1]); /*Retira o movimento de 'jogadas'*/
-        cont--;
-        desfazMovimento(x0, y0, xf, yf); /*Retorna o tabuleiro para a posicao anterior ao movimento*/
-    }
-
-    return false; // Se o movimento nao for valido ou se nao conseguir chegar a um caso base, retorna false
-}
-
 /*Funcao que retorna qual a linha final de um movimento para determinada direcao*/
 int defineXf(int x, char direcao){
     switch (direcao){
@@ -253,6 +225,34 @@ bool jogaRestaUm(int qtdPecas){
     }
 
     return false;
+}
+
+/*Funcao que itera o backtracking da funcao 'jogaRestaUm'.*/
+bool iteraBacktracking(int qtdPecas, int x0, int y0, char direcao){
+
+    int meio = TAMANHO / 2;
+
+    int xf = defineXf(x0, direcao);
+    int yf = defineYf(y0, direcao);
+
+    /*Somente itera o backtracking se o movimento for valido*/
+    if(movimentoValido(x0, y0, xf, yf)){
+
+        Movimento mov = movimenta(tabuleiro, x0, y0, xf, yf); // Altera o tabuleiro e retorna o movimento feito
+
+        // Salva o ultimo movimento em 'jogadas'
+        salvaMovimento(mov);
+
+        if(jogaRestaUm(qtdPecas - 1)){ // Chama novamente o jogaRestaUm com a quantidade de pecas atualizada
+            return true; // Retorna true se a proxima iteracao chegar ao caso base
+        }
+        
+        limpaMovimento(jogadas[cont - 1]); /*Retira o movimento de 'jogadas'*/
+        cont--;
+        desfazMovimento(x0, y0, xf, yf); /*Retorna o tabuleiro para a posicao anterior ao movimento*/
+    }
+
+    return false; // Se o movimento nao for valido ou se nao conseguir chegar a um caso base, retorna false
 }
 
 // Funcao que exclui uma instancia da struct Movimento da memoria
