@@ -15,6 +15,7 @@
 #define TAMANHO 7
 #define CENTRO 3
 #define NUM_INI_PECAS 32
+#define MAX_LINHA 100
 
 /* ******************************************************************
 * Struct Movimento representa um movimento com as caracteristicas:
@@ -67,6 +68,6 @@ bool jogaRestaUm(int qtdPecas);
 void limpaMovimento(Movimento *mov);
 void printMov(Movimento *mov);
 void imprimeSaida(char *nomeArquivo);
-void printHistorico();
+void printJogadas();
 
 #endif

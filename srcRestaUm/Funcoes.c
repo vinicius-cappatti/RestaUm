@@ -74,7 +74,7 @@ void lerTabuleiro(char *nomeArquivo) {
         return;
     }
 
-    char linha[200000];  // Ajusta para possível '\n' e '\0'
+    char linha[MAX_LINHA];  // Ajusta para possível '\n' e '\0'
 
     // Percorre o arquivo, lendo linha por linha
     for (int i = 0; i < TAMANHO + 2; i++) {  // TAMANHO + 2 devido à margem (#)
@@ -87,12 +87,12 @@ void lerTabuleiro(char *nomeArquivo) {
         }
 
         // Processa apenas as linhas internas (sem a margem)
-        for (int j = 1; j <= TAMANHO; j++) {  // Começa em 1 e vai até numColunas
+        for (int j = 1; j <= TAMANHO; j++) {  // Começa em 1 e vai até TAMANHO
             char caractere = linha[j];  // Pega o caractere correspondente
 
             // Converte os caracteres para os valores da matriz
             if (caractere == '#') {
-                tabuleiro[i - 1][j - 1] = -1;  // Margem
+                tabuleiro[i - 1][j - 1] = -1;  // Margem ou casa invalida
             } else if (caractere == 'o') {
                 tabuleiro[i - 1][j - 1] = 1;   // Espaço ocupado
             } else if (caractere == ' ') {
@@ -307,7 +307,7 @@ void imprimeSaida(char *nomeArquivo){
 }
 
 // Funcao que imprime todas as jogadas necessarias para se chegar na solucao do jogo
-void printHistorico(){
+void printJogadas(){
     for(int i = 0; i < cont; i++){
         printMov(jogadas[i]);
     }

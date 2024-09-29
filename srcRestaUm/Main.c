@@ -55,7 +55,7 @@ int main(int argc, char **argv){
 
     printf("Resultado encontrado!\nPassos para se resolver o resta um:\n");
 
-    printHistorico();
+    printJogadas();
 
     /*Imprimir as jogadas no arquivo de saida*/
     
