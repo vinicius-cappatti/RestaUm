@@ -233,8 +233,6 @@ bool jogaRestaUm(int qtdPecas){
 /*Funcao que itera o backtracking da funcao 'jogaRestaUm'.*/
 bool iteraBacktracking(int qtdPecas, int x0, int y0, char direcao){
 
-    int meio = TAMANHO / 2;
-
     int xf = defineXf(x0, direcao);
     int yf = defineYf(y0, direcao);
 

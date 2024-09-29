@@ -6,7 +6,7 @@
  *  Criar um programa utilizando Backtracking que solucione um jogo 
  *  de Resta Um de forma que, ao final, a peca restante esteja sempre
  *  na posicao central do tabuleiro
- *********************************************************************** */
+ ************************************************************************/
 
 
 /*Bibliotecas utilizadas*/
