@@ -66,7 +66,6 @@ int defineYf(int y, char direcao);
 bool jogaRestaUm(int qtdPecas);
 void limpaMovimento(Movimento *mov);
 void printMov(Movimento *mov);
-bool movimentaTab2(int i);
 void imprimeSaida(char *nomeArquivo);
 void printHistorico();
 
