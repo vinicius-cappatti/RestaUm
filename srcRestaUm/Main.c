@@ -30,9 +30,6 @@ int main(int argc, char **argv){
         return 1;
     }
 
-<<<<<<< HEAD
-    lerTabuleiro("entrada.txt"); // Leitura do conteudo do arquivo salva na matriz tabuleiro
-=======
     // Chama a função para ler o tabuleiro do arquivo e armazená-lo na matriz
     if (argc > 1) {
         lerTabuleiro(argv[1]);
@@ -40,7 +37,6 @@ int main(int argc, char **argv){
     else {
         lerTabuleiro("entrada.txt");
     }
->>>>>>> e4cc54dd8a6e2f2f373a4eec4f2d0d71ee137f22
 
     tabuleiro2 = copiaTabuleiro(tabuleiro, TAMANHO); // tabuleiro2 sera utilizado posteriormente para imprimir a saida
 
