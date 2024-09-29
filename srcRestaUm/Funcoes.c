@@ -12,6 +12,7 @@
 
 #include "Funcoes.h"
 
+// A funcao remove linha evita o erro do fgets substituindo o \n por terminador nulo
 void removeNovaLinha(char *linha) {
     char *pos;
     if ((pos = strchr(linha, '\n')) != NULL) {
@@ -19,6 +20,7 @@ void removeNovaLinha(char *linha) {
     }
 }
 
+// A funcao inicializaTabuleiro aloca o espaco para ele e preenche com zeros 
 int** inicializaTabuleiro(){
     bool sucesso = true;
 
@@ -50,6 +52,7 @@ int** inicializaTabuleiro(){
     return tabuleiro;
 }
 
+// A funcao copiaTabuleiro() passa os valores do tabuleiro1 para o tabuleiro2
 int** copiaTabuleiro(){
     int** tabuleiro2 = (int**) malloc(TAMANHO * sizeof(int*));
 
