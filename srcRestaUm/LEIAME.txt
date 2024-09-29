@@ -1,0 +1,14 @@
+* PARTICIPANTES:
+*    Thomaz de Souza Scopel (RA: 10417183)
+*    Vinícius Sanches Cappatti (RA: 10418266)
+* LINK PROJETO NO YOUTUBE:
+*  
+* INSTRUÇÕES DE COMPILAÇÃO:
+*  Compilar:
+*    gcc -o restaUm.exe srcRestaUm\Main.c srcRestaUm\Funcoes.c 
+*  Execução:
+*    A execução pode ser feita de duas maneiras:
+*      passando o caminho do arquivo de execução por terminal
+*          .\restaUm.exe .\srcRestaUm\entrada.txt
+*      ou executar se o arquivo de entrada estiver na mesma pasta
+*          .\restaUm.exe
