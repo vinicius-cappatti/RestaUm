@@ -46,7 +46,7 @@ int main(){
         return 1;
     }
 
-    printf("Resultado encontrado!\n");
+    printf("Resultado encontrado!\nPassos para se resolver o resta um:\n");
 
     printHistorico();
 

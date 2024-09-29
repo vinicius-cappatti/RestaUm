@@ -300,7 +300,7 @@ void imprimeSaida(char *nomeArquivo){
         int ymedia = (jogadas[i]->y0 + jogadas[i]->yf) / 2;
 
         tabuleiro2[xmedia][ymedia] = 0;
-        tabuleiro2[jogadas[i]->y0][jogadas[i]->yf] = 1;
+        tabuleiro2[jogadas[i]->xf][jogadas[i]->yf] = 1;
     }
     
     fclose(saida);
